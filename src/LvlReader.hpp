@@ -12,9 +12,7 @@ public:
     string file_name;
     LvlReader(const string file_name_) : file_name{file_name_}
     {
-        auto res = filesystem::current_path() / "lvls" / file_name;
-        res += ".txt";
-        path_file = res;
+        path_file = filesystem::current_path() / "lvls" / file_name += ".txt";
     }
 
     void build();
