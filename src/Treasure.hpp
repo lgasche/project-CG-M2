@@ -15,14 +15,14 @@ class Treasure
     }
 
 private:
-    ulong id;
-    tuple<ulong, ulong> pos;
+    unsigned int id;
+    tuple<unsigned int, unsigned int> pos;
     string name;
 
 public:
-    Treasure(const ulong id_, tuple<ulong, ulong> pos_, const string name_) : id{id_},
-                                                                              pos{pos_},
-                                                                              name{name_}
+    Treasure(const unsigned int id_, tuple<unsigned int, unsigned int> pos_, const string name_) : id{id_},
+                                                                                                   pos{pos_},
+                                                                                                   name{name_}
     {
     }
 };

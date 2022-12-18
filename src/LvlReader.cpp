@@ -55,7 +55,7 @@ void LvlReader::read_lvl()
             // Parse data in line correspoding to the Treasure.
             getline(file, line);
             auto tokens = parse_line(line);
-            auto treasure = Treasure(stoul(tokens[0]), make_tuple(stoul(tokens[1]), stoul(tokens[2])), tokens[3]);
+            auto treasure = Treasure((unsigned int)stoi(tokens[0]), make_tuple((unsigned int)stoi(tokens[1]), (unsigned int)stoi(tokens[2])), tokens[3]);
             std::cout << treasure << std::endl;
             treasures.push_back(treasure);
         }
