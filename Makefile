@@ -1,7 +1,7 @@
 OBJS	= main.o LvlReader.o Treasure.o
 SOURCE	= main.cpp LvlReader.cpp Treasure.cpp
 HEADER	= LvlReader.hpp Treasure.hpp
-OUT	= out
+OUT	= DungeonMaster
 CC	 = g++
 FLAGS	 = -g -c -Wall
 LFLAGS	 = -lstdc++fs
