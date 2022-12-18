@@ -25,10 +25,12 @@ public:
     LvlReader(const string file_name_) : file_name{file_name_}
     {
         path_file = fs::current_path() / "lvls" / file_name += ".txt";
+        path_dungeon_ppm = fs::current_path() / "lvls" / "dungeons/";
     }
 
     vector<string> parse_line(const string str);
-    void build();
+    void read_lvl();
+    void read_ppm();
 
 private:
     fs::path path_file;
