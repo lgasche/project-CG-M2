@@ -17,14 +17,14 @@ class Lvl
 
 public:
     // Todo add 2 other map.
-    Lvl(const map<tuple<uint, uint>, unique_ptr<Treasure>> treasures_) : treasures{treasures_}
+    Lvl(const map<tuple<unsigned int, unsigned int>, unique_ptr<Treasure>> treasures_) : treasures{treasures_}
     {
     }
 
 private:
     int nb_treasures;
-    map<tuple<uint, uint>, unique_ptr<Treasure>> treasures;
+    map<tuple<unsigned int, unsigned int>, unique_ptr<Treasure>> treasures;
     int nb_monsters;
-    // map<tuple<uint, uint>, Monster> monsters;
-    // map<tuple<uint, uint>, unique_ptr<Deco>> map;
+    // map<tuple<unsigned int, unsigned int>, Monster> monsters;
+    // map<tuple<unsigned int, unsigned int>, unique_ptr<Deco>> map;
 };
