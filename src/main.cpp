@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "LvlReader.hpp"
 
 int main(int argc, char *argv[])
@@ -9,6 +11,7 @@ int main(int argc, char *argv[])
 
     string filename = argv[1];
     auto read = LvlReader(filename);
+    std::cout << read << std::endl;
     read.read_lvl();
     std::cout << read << std::endl;
     read.read_ppm();
