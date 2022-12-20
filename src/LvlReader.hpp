@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 #include <memory>
 #include <unistd.h>
 
@@ -43,11 +44,11 @@ public:
 private:
     string path_file;
 
-    string first_comment;
+    string first_comment = "void";
     string path_dungeon_ppm;
-    int nb_treasures;
-    // vector<unique_ptr<Treasure>> treasures;
-    vector<Treasure> treasures;
-    int nb_monsters;
+    int nb_treasures = -1;
+    // map<tuple<unsigned int, unsigned int>, unique_ptr<Treasure>> treasures;
+    map<tuple<unsigned int, unsigned int>, Treasure> treasures;
+    int nb_monsters = -1;
     // vector monsters;
 };

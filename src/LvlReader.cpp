@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <cassert>
 
 using namespace std;
 
@@ -56,9 +57,17 @@ void LvlReader::read_lvl()
             // Parse data in line correspoding to the Treasure.
             getline(file, line);
             auto tokens = parse_line(line);
-            auto treasure = Treasure((unsigned int)stoi(tokens[0]), make_tuple((unsigned int)stoi(tokens[1]), (unsigned int)stoi(tokens[2])), tokens[3]);
-            std::cout << treasure << std::endl;
-            treasures.push_back(treasure);
+            auto treasure = Treasure((unsigned int)stoi(tokens[0]),
+                                     make_tuple((unsigned int)stoi(tokens[1]),
+                                                (unsigned int)stoi(tokens[2])),
+                                     tokens[3],
+                                     stoi(tokens[4]));
+
+            cout << treasure << endl;
+            // TODO map with unique_ptr
+            // assert(treasure != nullptr);
+            // treasures.insert({treasure.get()->get_pos(), move(treasure)});
+            treasures.insert({treasure.get_pos(), treasure});
         }
 
         // Part monstrers.
