@@ -1,12 +1,23 @@
 #include <project/Camera.hpp>
 #include <iostream>
 
-Camera::Camera(){
-	position = glm::vec3(0.5f, 0.5f, 0.5f);
+Camera::Camera(float x, float y){
+	position = glm::vec3(x + 0.5f, y + 0.5f, 0.5f);
 	Phi = M_PI * 2.5f;
 	speed = 4.f;
 	indice = 0.f;
 	computeDirectionVectors();
+}
+ 
+bool Camera::movementCamera()
+{
+	if(isTurningLeft) 	turnLeft(true);
+    if(isTurningRight) 	turnLeft(false);
+    if(isMovingLeft)  	moveLeft(true);
+    if(isMovingRight) 	moveLeft(false);
+    if(isMovingAhead)  	moveAhead(true);
+    if(isMovingBack) 	moveAhead(false);
+	return !isTurningLeft && !isTurningRight && !isMovingLeft && !isMovingRight && !isMovingAhead && !isMovingBack;
 }
 
 void Camera::computeDirectionVectors(){
@@ -16,38 +27,57 @@ void Camera::computeDirectionVectors(){
 	upVector = glm::cross(frontVector, leftVector);
 }
 
-bool Camera::moveAhead(bool direction)
+void Camera::moveAhead(bool movingAhead)
 {
-	if(indice >= 100)
+	if(indice == 0.f)
+	{
+		if(movingAhead)  isMovingAhead = true;
+		if(!movingAhead) isMovingBack  = true;
+	}
+	if(indice >= 100.f)
 	{
 		indice = 0.f;
-		return true;
+		if(movingAhead)  isMovingAhead = false;
+		if(!movingAhead) isMovingBack  = false;
+		return;
 	}
 	indice += speed;
-	position += speed * 0.01f * frontVector * ((direction) ? 1.f : -1.f);
+	position += speed * 0.01f * frontVector * ((movingAhead) ? 1.f : -1.f);
 	computeDirectionVectors();
-	return false;
 }
 
-bool Camera::moveLeft(bool direction)
+void Camera::moveLeft(bool movingLeft)
 {
-	if(indice >= 100)
+	if(indice == 0.f)
+	{
+		if(movingLeft)  isMovingLeft  = true;
+		if(!movingLeft) isMovingRight = true;
+	}
+	if(indice >= 100.f)
 	{
 		indice = 0.f;
-		return true;
+		if(movingLeft)  isMovingLeft  = false;
+		if(!movingLeft) isMovingRight = false;
+		return;
 	}
 	indice += speed;
-	position += speed * 0.01f * leftVector * ((direction) ? 1.f : -1.f);
+	position += speed * 0.01f * leftVector * ((movingLeft) ? 1.f : -1.f);
 	computeDirectionVectors();
-	return false;
 }
 
-bool Camera::turnLeft(bool direction)
+void Camera::turnLeft(bool turningLeft)
 {	
-	if(indice >= 100) 
+	if(indice == 0.f)
+	{
+		if(turningLeft)  isTurningLeft  = true;
+		if(!turningLeft) isTurningRight = true;
+	}
+	if(indice >= 100.f) 
 	{
 		indice = 0.f;
-		return true;
+		if(turningLeft)  isTurningLeft  = false;
+		if(!turningLeft) isTurningRight = false;
+		return;
 	}
 	/*
 	float correction = ((indice >= 100.f / 2.f) ? 2.f : 0.f);
@@ -60,15 +90,13 @@ bool Camera::turnLeft(bool direction)
 	}
 	Phi += (acos(setp1) - acos(setp2)) /  (2.f)  * ((direction) ? -1.f : 1.f);
 	*/
-	Phi += (((M_PI / 2) / 100.f)) * speed * ((direction) ? 1.f : -1.f);
 	indice += speed;
+	Phi += (((M_PI / 2) / 100.f)) * speed * ((turningLeft) ? 1.f : -1.f);
 	computeDirectionVectors();
-	return false;
 }
 
 glm::mat4 Camera::getViewMatrix() const
 {
-	//Point
 	glm::vec3 Point = position + frontVector;
 	glm::mat4 MV = glm::lookAt(position, position + frontVector, upVector);
 	return MV;

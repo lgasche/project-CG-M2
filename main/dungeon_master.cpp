@@ -98,14 +98,10 @@ int main(int argc, char **argv)
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
 
-    Camera camera;
+    Camera camera(0.f, 0.f);
     Vertex vertex;
     Square square;
     Texture texture;
-
-    bool isTurningLeft = false, isTurningRight = false,
-         isMovingLeft = false, isMovingRight = false,
-         isMovingAhead = false, isMovingBack = false;
 
     // TEST READER PPM
     std::string filename = argv[1];
@@ -169,33 +165,14 @@ int main(int argc, char **argv)
             }
         }
 
-        if (!isTurningLeft && !isTurningRight && !isMovingLeft && !isMovingRight && !isMovingAhead && !isMovingBack)
-        {
-            if (windowManager.isKeyPressed(SDLK_a))
-                isTurningLeft = !camera.turnLeft(true);
-            if (windowManager.isKeyPressed(SDLK_e))
-                isTurningRight = !camera.turnLeft(false);
-            if (windowManager.isKeyPressed(SDLK_q))
-                isMovingLeft = !camera.moveLeft(true);
-            if (windowManager.isKeyPressed(SDLK_d))
-                isMovingRight = !camera.moveLeft(false);
-            if (windowManager.isKeyPressed(SDLK_z))
-                isMovingAhead = !camera.moveAhead(true);
-            if (windowManager.isKeyPressed(SDLK_s))
-                isMovingBack = !camera.moveAhead(false);
-        }
-        if (isTurningLeft)
-            isTurningLeft = !camera.turnLeft(true);
-        if (isTurningRight)
-            isTurningRight = !camera.turnLeft(false);
-        if (isMovingLeft)
-            isMovingLeft = !camera.moveLeft(true);
-        if (isMovingRight)
-            isMovingRight = !camera.moveLeft(false);
-        if (isMovingAhead)
-            isMovingAhead = !camera.moveAhead(true);
-        if (isMovingBack)
-            isMovingBack = !camera.moveAhead(false);
+        if(camera.movementCamera()) {
+            if(windowManager.isKeyPressed(SDLK_a)) camera.turnLeft(true);      
+            if(windowManager.isKeyPressed(SDLK_e)) camera.turnLeft(false);
+            if(windowManager.isKeyPressed(SDLK_q)) camera.moveLeft(true);
+            if(windowManager.isKeyPressed(SDLK_d)) camera.moveLeft(false);
+            if(windowManager.isKeyPressed(SDLK_z)) camera.moveAhead(true);
+            if(windowManager.isKeyPressed(SDLK_s)) camera.moveAhead(false);
+        } 
 
         /*
         glm::ivec2 mousePos = glm::ivec2(0.0);

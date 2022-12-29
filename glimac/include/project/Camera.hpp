@@ -1,14 +1,18 @@
 #pragma once
 #include "glimac/glm.hpp"
+#include <glimac/SDLWindowManager.hpp>
 #include <cmath>
+
+using namespace glimac;
 
 class Camera
 {
 	public:
-		Camera();
-		bool moveAhead(bool direction);
-		bool moveLeft(bool direction);
-		bool turnLeft(bool direction);
+		Camera(float x, float y);
+		bool movementCamera();
+		void moveAhead(bool movingAhead);
+		void moveLeft(bool movingLeft);
+		void turnLeft(bool turningLeft);
 		glm::mat4 getViewMatrix() const;
 
 
@@ -24,4 +28,8 @@ class Camera
 
 		float speed;
 		float indice;
+
+		bool isTurningLeft  = false, isTurningRight = false,
+         	 isMovingLeft   = false, isMovingRight  = false,
+         	 isMovingAhead  = false, isMovingBack   = false;
 };
