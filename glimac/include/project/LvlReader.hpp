@@ -10,7 +10,9 @@
 using namespace std;
 
 #include "Treasure.hpp"
+#include "Monster.hpp"
 #include "Tunnel.hpp"
+#include "Lvl.hpp"
 
 class LvlReader
 {
@@ -32,8 +34,6 @@ public:
         getcwd(tmp, 256);
         path_file = tmp;
         path_file += "/lvls/" + file_name + ".txt";
-        // path_file = "/home/luca/Documents/M2/PROJET/main/lvls/lvl_sujets.txt";
-        /// home/luca/Documents/M2/PROJET/main/lvls/lvl_sujets.txt
 
         // Build path ppm.
         path_dungeon_ppm = tmp;
@@ -49,14 +49,16 @@ public:
     // TODO change Tunnel by decords : water/door/ect..
     map<tuple<unsigned int, unsigned int>, Tunnel> mp;
 
+    Lvl creat_lvl();
+
 private:
     string path_file;
 
     string first_comment;
     string path_dungeon_ppm;
-    int nb_treasures;
-    // vector<unique_ptr<Treasure>> treasures;
-    vector<Treasure> treasures;
-    int nb_monsters;
-    // vector monsters;
+    int nb_treasures = -1;
+    map<tuple<unsigned int, unsigned int>, Treasure> treasures;
+    int nb_monsters = -1;
+    map<tuple<unsigned int, unsigned int>, Monster> monsters;
+    tuple<unsigned int, unsigned int> start;
 };

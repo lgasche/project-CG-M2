@@ -57,9 +57,11 @@ void LvlReader::read_lvl()
             // Parse data in line correspoding to the Treasure.
             getline(file, line);
             auto tokens = parse_line(line);
-            auto treasure = Treasure((unsigned int)stoi(tokens[0]), make_tuple((unsigned int)stoi(tokens[1]), (unsigned int)stoi(tokens[2])), tokens[3]);
+            auto pos = make_tuple((unsigned int)stoi(tokens[1]), (unsigned int)stoi(tokens[2]));
+            auto treasure = Treasure((unsigned int)stoi(tokens[0]), pos, tokens[3]);
             std::cout << treasure << std::endl;
-            treasures.push_back(treasure);
+            // treasures.push_back(treasure);
+            treasures.insert({pos, treasure});
         }
 
         // Part monstrers.
@@ -166,7 +168,7 @@ vector<vector<char>> LvlReader::read_ppm()
  * Read the vector corresponding to the map.
  * Create the corresponding decorative objects.
  *
- * @param vmap
+ * @param vmap a char vector ascii representation of the map lvl.
  */
 void LvlReader::read_map(const vector<vector<char>> vmap)
 {
@@ -177,10 +179,10 @@ void LvlReader::read_map(const vector<vector<char>> vmap)
         {
 
             // TODO creat object.
-            // Starter
+            // Starter.
             if (vmap[x][y] == 's')
             {
-                // Starter
+                start = make_tuple((unsigned int)x, (unsigned int)y);
             }
             // Exit.
             if (vmap[x][y] == 'e')
@@ -235,4 +237,41 @@ Tunnel LvlReader::create_tunnel(const vector<vector<char>> vmap, const int x, co
         wall_west = true;
 
     return Tunnel(make_tuple((unsigned int)x, (unsigned int)y), wall_north, wall_east, wall_south, wall_west);
+}
+
+/**
+ * Creat the current lvl.
+ *
+ * @return Lvl
+ */
+Lvl LvlReader::creat_lvl()
+{
+
+    read_lvl();
+
+    auto map = read_ppm();
+
+    for (int i = 0; i < map.size(); i++)
+    {
+        for (int j = 0; j < map[i].size(); j++)
+
+        {
+            std::cout << map[i][j] << " ";
+        }
+
+        std::cout << endl;
+    }
+
+    read_map(map);
+
+    std::cout << "Elements in mp1 are\n";
+    std::cout << "KEY\tELEMENT\n";
+    for (auto itr = mp.begin(); itr != mp.end(); ++itr)
+    {
+        std::cout
+            << '\t'
+            << itr->second << '\n';
+    }
+
+    return Lvl(mp, treasures, monsters, start);
 }

@@ -7,6 +7,8 @@
 using namespace std;
 
 #include "Treasure.hpp"
+#include "Monster.hpp"
+#include "Tunnel.hpp"
 
 class Lvl
 {
@@ -16,15 +18,23 @@ class Lvl
     }
 
 public:
-    // Todo add 2 other map.
-    Lvl(const map<tuple<unsigned int, unsigned int>, unique_ptr<Treasure>> treasures_) : treasures{treasures_}
+    Lvl(const map<tuple<unsigned int, unsigned int>, Tunnel> map_lvl_,
+        map<tuple<unsigned int, unsigned int>, Treasure> treasures_,
+        map<tuple<unsigned int, unsigned int>, Monster> monsters_,
+        tuple<unsigned int, unsigned int> start_) : map_lvl{map_lvl_},
+                                                    treasures{treasures_},
+                                                    monsters{monsters_},
+                                                    start{start_}
     {
     }
 
+    tuple<unsigned int, unsigned int> get_start() { return start; }
+
 private:
+    map<tuple<unsigned int, unsigned int>, Tunnel> map_lvl;
     int nb_treasures;
-    map<tuple<unsigned int, unsigned int>, unique_ptr<Treasure>> treasures;
+    map<tuple<unsigned int, unsigned int>, Treasure> treasures;
     int nb_monsters;
-    // map<tuple<unsigned int, unsigned int>, Monster> monsters;
-    // map<tuple<unsigned int, unsigned int>, unique_ptr<Deco>> map;
+    map<tuple<unsigned int, unsigned int>, Monster> monsters;
+    tuple<unsigned int, unsigned int> start;
 };

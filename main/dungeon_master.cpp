@@ -98,40 +98,18 @@ int main(int argc, char **argv)
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
 
-    Camera camera(0.f, 0.f);
-    Vertex vertex;
-    Square square;
-    Texture texture;
-
-    // TEST READER PPM
+    // Init Lvl.
     std::string filename = argv[1];
     auto read = LvlReader(filename);
     std::cout << read << std::endl;
-    read.read_lvl();
-    std::cout << read << std::endl;
-    auto map = read.read_ppm();
+    auto lvl = read.creat_lvl();
+    auto start_camera = lvl.get_start();
 
-    for (int i = 0; i < map.size(); i++)
-    {
-        for (int j = 0; j < map[i].size(); j++)
-
-        {
-            std::cout << map[i][j] << " ";
-        }
-
-        std::cout << endl;
-    }
-
-    read.read_map(map);
-
-    std::cout << "Elements in mp1 are\n";
-    std::cout << "KEY\tELEMENT\n";
-    for (auto itr = read.mp.begin(); itr != read.mp.end(); ++itr)
-    {
-        std::cout
-            << '\t'
-            << itr->second << '\n';
-    }
+    Camera camera((float)get<0>(start_camera), (float)get<1>(start_camera));
+    std::cout << "CAMERA : " << (float)get<0>(start_camera) << " " << (float)get<1>(start_camera) << std::endl;
+    Vertex vertex;
+    Square square;
+    Texture texture;
 
     // Chargement des shaders
     FilePath applicationPath(argv[0]);
@@ -165,14 +143,21 @@ int main(int argc, char **argv)
             }
         }
 
-        if(camera.movementCamera()) {
-            if(windowManager.isKeyPressed(SDLK_a)) camera.turnLeft(true);      
-            if(windowManager.isKeyPressed(SDLK_e)) camera.turnLeft(false);
-            if(windowManager.isKeyPressed(SDLK_q)) camera.moveLeft(true);
-            if(windowManager.isKeyPressed(SDLK_d)) camera.moveLeft(false);
-            if(windowManager.isKeyPressed(SDLK_z)) camera.moveAhead(true);
-            if(windowManager.isKeyPressed(SDLK_s)) camera.moveAhead(false);
-        } 
+        if (camera.movementCamera())
+        {
+            if (windowManager.isKeyPressed(SDLK_a))
+                camera.turnLeft(true);
+            if (windowManager.isKeyPressed(SDLK_e))
+                camera.turnLeft(false);
+            if (windowManager.isKeyPressed(SDLK_q))
+                camera.moveLeft(true);
+            if (windowManager.isKeyPressed(SDLK_d))
+                camera.moveLeft(false);
+            if (windowManager.isKeyPressed(SDLK_z))
+                camera.moveAhead(true);
+            if (windowManager.isKeyPressed(SDLK_s))
+                camera.moveAhead(false);
+        }
 
         /*
         glm::ivec2 mousePos = glm::ivec2(0.0);
