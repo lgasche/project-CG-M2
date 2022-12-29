@@ -225,13 +225,13 @@ Tunnel LvlReader::create_tunnel(const vector<vector<char>> vmap, const int x, co
     bool wall_south = false;
     bool wall_west = false;
 
-    if (vmap[x][y - 1] == 'w' || y < 0)
-        wall_north = true;
-    if (vmap[x + 1][y] == 'w' || x > vmap[x].size())
-        wall_east = true;
-    if (vmap[x][y + 1] == 'w' || y > vmap.size())
-        wall_south = true;
     if (vmap[x - 1][y] == 'w' || x < 0)
+        wall_north = true;
+    if (vmap[x][y + 1] == 'w' || y > vmap[x].size())
+        wall_east = true;
+    if (vmap[x + 1][y] == 'w' || x > vmap.size())
+        wall_south = true;
+    if (vmap[x][y - 1] == 'w' || y < 0)
         wall_west = true;
 
     return Tunnel(make_tuple((unsigned int)x, (unsigned int)y), wall_north, wall_east, wall_south, wall_west);
