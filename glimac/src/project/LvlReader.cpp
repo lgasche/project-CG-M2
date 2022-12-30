@@ -160,7 +160,7 @@ vector<vector<char>> LvlReader::read_ppm()
             }
             map.push_back(row);
         }
-        //std::reverse(map.begin(), map.end());
+        std::reverse(map.begin(), map.end());
     }
     return map;
 }
@@ -173,9 +173,12 @@ vector<vector<char>> LvlReader::read_ppm()
  */
 void LvlReader::read_map(const vector<vector<char>> vmap)
 {
-
-    for (int y = 0; y < vmap.size(); y++)
+    int y;
+    for (auto it = vmap.begin() ; it != vmap.end(); ++it)
+    //for (int y = 0; y < vmap.size(); y++)
     {
+        y = (it - vmap.begin()) * 1;
+        std::cout << y << std::endl;
         for (int x = 0; x < vmap[y].size(); x++)
         {
 
@@ -207,7 +210,7 @@ void LvlReader::read_map(const vector<vector<char>> vmap)
                 auto tunnel = create_tunnel(vmap, x, y);
                 mp.insert({make_tuple((unsigned int)x, (unsigned int)y), tunnel});
             }
-            // Wall.
+            // Wall. // ATTENTION, il n'y a rien a faire pour les murs (et le code pour wall et water sont les mêmes)
             if (vmap[x][y] == 'w')
             {
                 // Wall.
@@ -245,7 +248,7 @@ Tunnel LvlReader::create_tunnel(const vector<vector<char>> vmap, const int x, co
  *
  * @return Lvl
  */
-Lvl LvlReader::creat_lvl()
+Lvl LvlReader::creat_lvl(const FilePath& applicationPath)
 {
 
     read_lvl();
@@ -274,5 +277,5 @@ Lvl LvlReader::creat_lvl()
             << itr->second << '\n';
     }
 
-    return Lvl(mp, treasures, monsters, start);
+    return Lvl(mp, treasures, monsters, start, applicationPath);
 }

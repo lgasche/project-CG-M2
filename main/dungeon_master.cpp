@@ -8,8 +8,7 @@
 //#include <project/Square.hpp>
 #include <project/LvlReader.hpp>
 #include <project/Camera.hpp>
-//#include <project/Vertex.hpp>
-#include <project/BasicStructure.hpp>
+#include <project/Vertex.hpp>
 #include <project/ATHStructure.hpp>
 
 using namespace glimac;
@@ -33,21 +32,23 @@ int main(int argc, char **argv)
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
 
+    FilePath applicationPath(argv[0]);
+
     // Init Lvl.
     std::string filename = argv[1];
     auto read = LvlReader(filename);
     std::cout << read << std::endl;
-    auto lvl = read.creat_lvl();
+    auto lvl = read.creat_lvl(applicationPath);
     auto start_camera = lvl.get_start();
 
     //Camera camera((float)get<0>(start_camera), (float)get<1>(start_camera));
     std::cout << "CAMERA : " << (float)get<0>(start_camera) << " " << (float)get<1>(start_camera) << std::endl;
 
     Camera camera(0.f, 2.f);
+    Vertex vertex;
+    Texture texture;
+    Square square;
 
-    // Chargement des shaders
-    FilePath applicationPath(argv[0]);
-    BasicProgram squareProgam(applicationPath);
     ATHProgram athProgram(applicationPath);
 
     glEnable(GL_DEPTH_TEST);
@@ -55,8 +56,10 @@ int main(int argc, char **argv)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Chargement des textures / VBO - VAO
-    lvl.initialization();
+
+    // VBO - VAO
+    vertex.sendData(square.getVertexCount(), square.getDataPointer());
+    vertex.indicationVertices();
 
     // Application loop:
     bool done = false;
@@ -94,25 +97,21 @@ int main(int argc, char **argv)
         // Nettoyage des buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        squareProgam.mProgram.use();
-        glUniform1i(squareProgam.uTexture, 0);
 
-        // Envoie des informations aux shaders
         glm::mat4 globalMVMatrix = camera.getViewMatrix();
         glm::mat4 projMatrix = glm::perspective(glm::radians(90.f), (widthWindow / heightWindow), 0.1f, 3.f);
         // Ajustement de la caméra pour l'ATH
 
-
-        glUniform3f(squareProgam.uKd, 0.3f, 0.3f, 0.3f);       // Intensité de la lumiètre globale
-        glUniform3f(squareProgam.uKs, 0.001f, 0.001f, 0.001f); // Intensité du centre lumineux
-        glUniform1f(squareProgam.uShininess, 4.f);             // Taille du centre lumineux
-        glm::vec4 LightPos = globalMVMatrix * glm::vec4(0.0, 0.0, 0.0, 0.0);
-        glUniform3f(squareProgam.uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
-        glUniform3f(squareProgam.uLightIntensity, 1.f, 1.f, 1.f);
-
-        lvl.drawLevel(&squareProgam, globalMVMatrix, projMatrix);
-
         
+        vertex.bindingVAO();
+
+        lvl.drawLevel(square.getVertexCount(), globalMVMatrix, projMatrix);
+
+        vertex.debindingVAO();
+
+        // Débindind de la texture principale 
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, 0); // débind sur l'unité GL_TEXTURE0     
 
         //// TEST ATH
         /*
@@ -134,6 +133,7 @@ int main(int argc, char **argv)
         windowManager.swapBuffers();
     }
 
+    vertex.clearData();
     lvl.clear();
 
     return EXIT_SUCCESS;

@@ -1,52 +1,47 @@
 #include <project/Lvl.hpp>
 
-void Lvl::drawLevel(BasicProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix) 
+void Lvl::addLight(glm::mat4 globalMVMatrix) {
+	glUniform3f(squareProgam.uKd, 0.3f, 0.3f, 0.3f);       // Intensité de la lumiètre globale
+	glUniform3f(squareProgam.uKs, 0.001f, 0.001f, 0.001f); // Intensité du centre lumineux
+	glUniform1f(squareProgam.uShininess, 4.f);             // Taille du centre lumineux
+	glm::vec4 LightPos = globalMVMatrix * glm::vec4(0.0, 0.0, 0.0, 0.0);
+	glUniform3f(squareProgam.uLightPos_vs, LightPos.x, LightPos.y, LightPos.z);
+	glUniform3f(squareProgam.uLightIntensity, 1.f, 1.f, 1.f);
+}
+
+void Lvl::drawLevel(int squareVertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix) 
 {	
-	vertex.bindingVAO();
+	squareProgam.mProgram.use();
+    glUniform1i(squareProgam.uTexture, 0);
+
+    // Lumière 
+    addLight(globalMVMatrix);
 
 	// Walls
-	texture.bindingWallTexture();
+	textureWall.bindingTexture();
 	for(auto it = map_lvl.begin(); it != map_lvl.end(); it++)
 	{
-	    it->second.drawWalls(square.getVertexCount(), squareProgam, globalMVMatrix, projMatrix);
-	}
-	// Floors
-	texture.bindingFloorTexture();
-	for(auto it = map_lvl.begin(); it != map_lvl.end(); it++)
-	{
-	    it->second.drawFloor(square.getVertexCount(), squareProgam, globalMVMatrix, projMatrix);
+	    it->second.drawWalls(squareVertex, &squareProgam, globalMVMatrix, projMatrix);
 	}
 	// Roofs
-	texture.bindingRoofTexture();
+	textureRoof.bindingTexture();
 	for(auto it = map_lvl.begin(); it != map_lvl.end(); it++)
 	{
-	    it->second.drawRoof(square.getVertexCount(), squareProgam, globalMVMatrix, projMatrix);
+	    it->second.drawRoof(squareVertex, &squareProgam, globalMVMatrix, projMatrix);
+	}
+	// Floors
+	textureFloor.bindingTexture();
+	for(auto it = map_lvl.begin(); it != map_lvl.end(); it++)
+	{
+	    it->second.drawFloor(squareVertex, &squareProgam, globalMVMatrix, projMatrix);
 	}
 
-	vertex.debindingVAO();
-	texture.debindingTexture();
 }
 
 void Lvl::clear() 
 { 
-	texture.clearTexture(); 
-	vertex.clearData();
-}
-
-void Lvl::initialization() 
-{	
-	glEnable(GL_DEPTH_TEST);
-    // Gestion de la transparence
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    // Chargement des textures
-	texture.loadWall("../assets/textures/Wall_1.png");
-    texture.loadRoof("../assets/textures/Roof_1.png");
-    texture.loadFloor("../assets/textures/Floor_1.png");
-    texture.loadCreature("../assets/textures/Creature_1.png");
-
-    // VBO - VAO
-    vertex.sendData(square.getVertexCount(), square.getDataPointer());
-    vertex.indicationVertices();
+	textureWall.clearTexture(); 
+	textureRoof.clearTexture(); 
+	textureFloor.clearTexture(); 
+	textureCreature.clearTexture(); 
 }

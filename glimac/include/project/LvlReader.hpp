@@ -50,7 +50,7 @@ public:
     // TODO change Tunnel by decords : water/door/ect..
     map<tuple<unsigned int, unsigned int>, Tunnel> mp;
 
-    Lvl creat_lvl();
+    Lvl creat_lvl(const FilePath& applicationPath);
 
 private:
     string path_file;
