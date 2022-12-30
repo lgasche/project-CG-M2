@@ -6,6 +6,7 @@
 #include <map>
 #include <memory>
 #include <unistd.h>
+#include <algorithm>
 
 using namespace std;
 

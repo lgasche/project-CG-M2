@@ -1,4 +1,4 @@
-#include <iostream>
+
 #include <fstream>
 #include <string>
 #include <sstream>
@@ -160,6 +160,7 @@ vector<vector<char>> LvlReader::read_ppm()
             }
             map.push_back(row);
         }
+        //std::reverse(map.begin(), map.end());
     }
     return map;
 }

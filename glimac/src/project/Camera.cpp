@@ -2,7 +2,7 @@
 #include <iostream>
 
 Camera::Camera(float x, float y){
-	position = glm::vec3(x + 0.5f, y + 0.5f, 0.5f);
+	position = glm::vec3(x + 0.5f, 0.5f, y + 0.5f);
 	Phi = M_PI * 2.5f;
 	speed = 4.f;
 	indice = 0.f;

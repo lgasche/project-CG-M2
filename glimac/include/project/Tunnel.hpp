@@ -4,6 +4,9 @@
 #include <string>
 #include <iostream>
 
+#include <glimac/glm.hpp>
+#include <project/BasicStructure.hpp>
+
 using namespace std;
 
 class Tunnel
@@ -18,6 +21,7 @@ class Tunnel
                       << " | " << tunnel.wall_south
                       << " | " << tunnel.wall_west;
     }
+
 
 private:
     tuple<unsigned int, unsigned int> pos;
@@ -39,4 +43,8 @@ public:
     }
 
     tuple<unsigned int, unsigned int> get_pos() { return pos; };
+
+    void drawWalls(int vertex, BasicProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
+    void drawFloor(int vertex, BasicProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
+    void  drawRoof(int vertex, BasicProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
 };

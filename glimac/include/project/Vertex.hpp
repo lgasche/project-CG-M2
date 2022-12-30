@@ -10,7 +10,8 @@ class Vertex
 		void sendData(GLsizeiptr size, const void *data);
 		void indicationVertices();
 		void clearData();
-		void testBindingVAO();
+		void bindingVAO();
+		void debindingVAO();
 
 
 

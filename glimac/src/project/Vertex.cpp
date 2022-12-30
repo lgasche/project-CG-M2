@@ -45,11 +45,14 @@ void Vertex::clearData()
 	glDeleteVertexArrays(1, &vao);
 }
 
-void Vertex::testBindingVAO()
+void Vertex::bindingVAO()
 {
 	// Binding du VAO 
 	glBindVertexArray(vao);
+}
 
-	// TOUS LES AFFCHAGES DES ELEMENTS DU JEU
-	// glBindVertexArray(0);
+void Vertex::debindingVAO()
+{
+    // Débindind du VAO
+    glBindVertexArray(0);
 }
