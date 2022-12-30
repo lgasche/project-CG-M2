@@ -6,7 +6,7 @@
 #include <iterator>
 
 //#include <project/Square.hpp>
-#include <project/LvlReader.hpp>
+#include <project/LevelReader.hpp>
 #include <project/Camera.hpp>
 #include <project/Vertex.hpp>
 #include <project/ATHStructure.hpp>
@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 
     // Init Lvl.
     std::string filename = argv[1];
-    auto read = LvlReader(filename);
+    auto read = LevelReader(filename);
     std::cout << read << std::endl;
     auto lvl = read.creat_lvl(applicationPath);
     auto start_camera = lvl.get_start();
@@ -99,35 +99,45 @@ int main(int argc, char **argv)
 
 
         glm::mat4 globalMVMatrix = camera.getViewMatrix();
-        glm::mat4 projMatrix = glm::perspective(glm::radians(90.f), (widthWindow / heightWindow), 0.1f, 3.f);
+        glm::mat4 projMatrix = glm::perspective(glm::radians(90.f), (widthWindow / heightWindow), 0.1f, 100.f);
         // Ajustement de la caméra pour l'ATH
-
+    
+        glViewport(-(widthWindow - heightWindow) / 2.f, 0.f, widthWindow, heightWindow);
         
         vertex.bindingVAO();
 
         lvl.drawLevel(square.getVertexCount(), globalMVMatrix, projMatrix);
+
+
+        glViewport(0.f, 0.f, widthWindow, heightWindow);
+        //// TEST ATH
+        
+        athProgram.mProgram.use();
+        glUniform1i(athProgram.uTexture, 0);
+
+        //projMatrix = glm::perspective(glm::radians(100.f), ((widthWindow -(widthWindow - heightWindow) / 2.f) / heightWindow), 0.1f, 100.f);
+
+        //texture.bindingFloorTexture();
+        glm::mat4 wallMVMatrix = glm::translate(glm::mat4(1), glm::vec3(0.125f, 0.f, -0.25f));
+        wallMVMatrix = glm::scale(wallMVMatrix,     glm::vec3(0.25f));
+        glUniformMatrix4fv(athProgram.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projMatrix * wallMVMatrix));
+        glUniformMatrix4fv(athProgram.uMVMatrix, 1, GL_FALSE, glm::value_ptr(wallMVMatrix));
+        glUniformMatrix4fv(athProgram.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(wallMVMatrix))));
+        glDrawArrays(GL_TRIANGLES, 0, square.getVertexCount());
+
+        wallMVMatrix = glm::translate(glm::mat4(1), glm::vec3(0.125f, -0.25f, -0.25f));
+        wallMVMatrix = glm::scale(wallMVMatrix,     glm::vec3(0.25f));
+        glUniformMatrix4fv(athProgram.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projMatrix * wallMVMatrix));
+        glUniformMatrix4fv(athProgram.uMVMatrix, 1, GL_FALSE, glm::value_ptr(wallMVMatrix));
+        glUniformMatrix4fv(athProgram.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(wallMVMatrix))));
+        glDrawArrays(GL_TRIANGLES, 0, square.getVertexCount());
+    
 
         vertex.debindingVAO();
 
         // Débindind de la texture principale 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, 0); // débind sur l'unité GL_TEXTURE0     
-
-        //// TEST ATH
-        /*
-        athProgram.mProgram.use();
-        glUniform1i(athProgram.uTexture, 0);
-
-        texture.bindingFloorTexture();
-        glm::mat4 wallMVMatrix = glm::translate(glm::mat4(1), glm::vec3(0.4f, -0.5f, -0.325f));
-        wallMVMatrix = glm::scale(wallMVMatrix,     glm::vec3(0.5, 1.f, 1.f));
-        //wallMVMatrix = glm::rotate(wallMVMatrix, glm::radians(-90.f), glm::vec3(0.f, 1.f, 0.f));
-        glUniformMatrix4fv(athProgram.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projMatrix * wallMVMatrix));
-        glUniformMatrix4fv(athProgram.uMVMatrix, 1, GL_FALSE, glm::value_ptr(wallMVMatrix));
-        glUniformMatrix4fv(athProgram.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(wallMVMatrix))));
-        
-        glDrawArrays(GL_TRIANGLES, 0, square.getVertexCount());
-    */  
 
         // Update the display
         windowManager.swapBuffers();

@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include <glimac/glm.hpp>
-#include <project/BasicStructure.hpp>
+#include <project/LevelStructure.hpp>
 
 using namespace std;
 
@@ -44,7 +44,7 @@ public:
 
     tuple<unsigned int, unsigned int> get_pos() { return pos; };
 
-    void drawWalls(int vertex, BasicProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
-    void drawFloor(int vertex, BasicProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
-    void  drawRoof(int vertex, BasicProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
+    void drawWalls(int vertex, LevelProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
+    void drawFloor(int vertex, LevelProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
+    void  drawRoof(int vertex, LevelProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
 };

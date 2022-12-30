@@ -12,15 +12,15 @@ using namespace std;
 #include <project/Texture.hpp>
 #include <project/Square.hpp>
 
-class Lvl
+class Level
 {
-    friend std::ostream &operator<<(std::ostream &stream, const Lvl &lvl)
+    friend std::ostream &operator<<(std::ostream &stream, const Level &lvl)
     {
         return stream;
     }
 
 public:
-    Lvl(const map<tuple<unsigned int, unsigned int>, Tunnel> map_lvl_,
+    Level(const map<tuple<unsigned int, unsigned int>, Tunnel> map_lvl_,
               map<tuple<unsigned int, unsigned int>, Treasure> treasures_,
               map<tuple<unsigned int, unsigned int>, Monster> monsters_,
               tuple<unsigned int, unsigned int> start_, const FilePath& applicationPath) : map_lvl{map_lvl_},
@@ -59,6 +59,6 @@ private:
     Texture textureFloor;
     Texture textureCreature;
 
-    BasicProgram squareProgam;
+    LevelProgram squareProgam;
 
 };

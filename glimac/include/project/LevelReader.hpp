@@ -13,13 +13,13 @@ using namespace std;
 #include "Treasure.hpp"
 #include "Monster.hpp"
 #include "Tunnel.hpp"
-#include "Lvl.hpp"
+#include "Level.hpp"
 
-class LvlReader
+class LevelReader
 {
-    friend std::ostream &operator<<(std::ostream &stream, const LvlReader &lvlReader)
+    friend std::ostream &operator<<(std::ostream &stream, const LevelReader &lvlReader)
     {
-        return stream << "LvlReader: " << lvlReader.file_name
+        return stream << "LevelReader: " << lvlReader.file_name
                       << " | " << lvlReader.first_comment
                       << " | " << lvlReader.path_file
                       << " | " << lvlReader.path_dungeon_ppm
@@ -28,7 +28,7 @@ class LvlReader
 
 public:
     string file_name;
-    LvlReader(const string file_name_) : file_name{file_name_}
+    LevelReader(const string file_name_) : file_name{file_name_}
     {
         // Build path file.
         char tmp[256];
@@ -50,7 +50,7 @@ public:
     // TODO change Tunnel by decords : water/door/ect..
     map<tuple<unsigned int, unsigned int>, Tunnel> mp;
 
-    Lvl creat_lvl(const FilePath& applicationPath);
+    Level creat_lvl(const FilePath& applicationPath);
 
 private:
     string path_file;

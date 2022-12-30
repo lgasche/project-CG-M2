@@ -4,7 +4,7 @@
 
 using namespace glimac;
 
-struct BasicProgram {
+struct LevelProgram {
     Program mProgram;
     // Gestion position et texture
     GLint uMVPMatrix;
@@ -18,7 +18,7 @@ struct BasicProgram {
     GLint uLightPos_vs;
     GLint uLightIntensity;
 
-    BasicProgram()
+    LevelProgram()
     {
 
     }
@@ -39,7 +39,7 @@ struct BasicProgram {
         uLightIntensity = glGetUniformLocation(mProgram.getGLId(), "uLightIntensity");
     }
 /*
-    BasicProgram(const FilePath& applicationPath):
+    LevelProgram(const FilePath& applicationPath):
         mProgram(loadProgram(applicationPath.dirPath() + "shaders/3D.vs.glsl",
                               applicationPath.dirPath() + "shaders/multiTex3Dlight.fs.glsl")) { //shaders/tex3D.fs.glsl
         uMVPMatrix = glGetUniformLocation(mProgram.getGLId(), "uMVPMatrix");

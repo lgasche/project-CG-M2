@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#include <project/LvlReader.hpp>
+#include <project/LevelReader.hpp>
 #include <project/Treasure.hpp>
 #include <project/Tunnel.hpp>
 
@@ -16,7 +16,7 @@ using namespace std;
  *
  * @return a vector<string> of elements that make up the string.
  */
-vector<string> LvlReader::parse_line(const string str)
+vector<string> LevelReader::parse_line(const string str)
 {
     stringstream ss(str);
     string token;
@@ -33,7 +33,7 @@ vector<string> LvlReader::parse_line(const string str)
  * Read the txt file corresponding to the level.
  * Create the different objects present in the level: treasures, monsters, etc..
  */
-void LvlReader::read_lvl()
+void LevelReader::read_lvl()
 {
     string line;
     ifstream file(path_file);
@@ -82,7 +82,7 @@ void LvlReader::read_lvl()
  *
  * @return vector<vector<char>> map.
  */
-vector<vector<char>> LvlReader::read_ppm()
+vector<vector<char>> LevelReader::read_ppm()
 {
     vector<vector<char>> map;
     string line;
@@ -171,7 +171,7 @@ vector<vector<char>> LvlReader::read_ppm()
  *
  * @param vmap a char vector ascii representation of the map lvl.
  */
-void LvlReader::read_map(const vector<vector<char>> vmap)
+void LevelReader::read_map(const vector<vector<char>> vmap)
 {
     int y;
     for (auto it = vmap.begin() ; it != vmap.end(); ++it)
@@ -224,7 +224,7 @@ void LvlReader::read_map(const vector<vector<char>> vmap)
  *
  * @return Tunnel
  */
-Tunnel LvlReader::create_tunnel(const vector<vector<char>> vmap, const int x, const int y)
+Tunnel LevelReader::create_tunnel(const vector<vector<char>> vmap, const int x, const int y)
 {
     bool wall_north = false;
     bool wall_east = false;
@@ -248,7 +248,7 @@ Tunnel LvlReader::create_tunnel(const vector<vector<char>> vmap, const int x, co
  *
  * @return Lvl
  */
-Lvl LvlReader::creat_lvl(const FilePath& applicationPath)
+Level LevelReader::creat_lvl(const FilePath& applicationPath)
 {
 
     read_lvl();
@@ -277,5 +277,5 @@ Lvl LvlReader::creat_lvl(const FilePath& applicationPath)
             << itr->second << '\n';
     }
 
-    return Lvl(mp, treasures, monsters, start, applicationPath);
+    return Level(mp, treasures, monsters, start, applicationPath);
 }

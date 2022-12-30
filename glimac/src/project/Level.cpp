@@ -1,6 +1,6 @@
-#include <project/Lvl.hpp>
+#include <project/Level.hpp>
 
-void Lvl::addLight(glm::mat4 globalMVMatrix) {
+void Level::addLight(glm::mat4 globalMVMatrix) {
 	glUniform3f(squareProgam.uKd, 0.3f, 0.3f, 0.3f);       // Intensité de la lumiètre globale
 	glUniform3f(squareProgam.uKs, 0.001f, 0.001f, 0.001f); // Intensité du centre lumineux
 	glUniform1f(squareProgam.uShininess, 4.f);             // Taille du centre lumineux
@@ -9,7 +9,7 @@ void Lvl::addLight(glm::mat4 globalMVMatrix) {
 	glUniform3f(squareProgam.uLightIntensity, 1.f, 1.f, 1.f);
 }
 
-void Lvl::drawLevel(int squareVertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix) 
+void Level::drawLevel(int squareVertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix) 
 {	
 	squareProgam.mProgram.use();
     glUniform1i(squareProgam.uTexture, 0);
@@ -38,7 +38,7 @@ void Lvl::drawLevel(int squareVertex, glm::mat4 globalMVMatrix, glm::mat4 projMa
 
 }
 
-void Lvl::clear() 
+void Level::clear() 
 { 
 	textureWall.clearTexture(); 
 	textureRoof.clearTexture(); 

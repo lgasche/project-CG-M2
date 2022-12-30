@@ -1,6 +1,6 @@
 #include <project/Tunnel.hpp>
 
-void Tunnel::drawWalls(int vertex, BasicProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix)
+void Tunnel::drawWalls(int vertex, LevelProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix)
 {
     glm::mat4 wallMVMatrix;
     // Draw wall
@@ -44,7 +44,7 @@ void Tunnel::drawWalls(int vertex, BasicProgram *squareProgam, glm::mat4 globalM
     }
 }
 
-void Tunnel::drawFloor(int vertex, BasicProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix)
+void Tunnel::drawFloor(int vertex, LevelProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix)
 {
     glm::mat4 floorMVMatrix = glm::translate(globalMVMatrix, glm::vec3(get<0>(pos), 0.f, get<1>(pos) + 1.f)); // Translation
     floorMVMatrix = glm::rotate(floorMVMatrix, glm::radians(-90.f), glm::vec3(1.f, 0.f, 0.f));   // Translation * Rotation
@@ -54,7 +54,7 @@ void Tunnel::drawFloor(int vertex, BasicProgram *squareProgam, glm::mat4 globalM
     glDrawArrays(GL_TRIANGLES, 0, vertex);
 }
 
-void Tunnel::drawRoof(int vertex, BasicProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix)
+void Tunnel::drawRoof(int vertex, LevelProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix)
 {
     glm::mat4 roofMVMatrix = glm::translate(globalMVMatrix, glm::vec3(get<0>(pos), 1.f, get<1>(pos))); // Translation
     roofMVMatrix = glm::rotate(roofMVMatrix, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));   // Translation * Rotation
