@@ -71,6 +71,11 @@ void LevelReader::read_lvl_txt_and_creat_objects()
         {
             // Todo add monster
             getline(file, line);
+            auto tokens = parse_line(line);
+            auto pos = make_tuple((unsigned int)stoi(tokens[1]), (unsigned int)stoi(tokens[2]));
+            auto monster = Monster((unsigned int)stoi(tokens[0]), pos, tokens[3], (unsigned int)stoi(tokens[4]), stoi(tokens[5]), stoi(tokens[6]), stoi(tokens[7]), tokens[8]);
+            std::cout << monster << std::endl;
+            monsters.insert({pos, monster});
         }
     }
     file.close();
@@ -121,7 +126,7 @@ vector<vector<char>> LevelReader::read_ppm_to_vmap()
                 {
                     std::cerr << "Error reading from file around (" << x << "," << y << ")" << std::endl;
                 }
-                std::cout << "RGB " << red << ", " << green << ", " << blue << std::endl;
+                // std::cout << "RGB " << red << ", " << green << ", " << blue << std::endl;
                 // Starter
                 if (red == 255 && green == 0 && blue == 0)
                 {
