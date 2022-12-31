@@ -42,15 +42,15 @@ public:
     }
 
     vector<string> parse_line(const string str);
-    void read_lvl();
-    vector<vector<char>> read_ppm();
-    void read_map(const vector<vector<char>> vmap);
+    void read_lvl_txt_and_creat_objects();
+    vector<vector<char>> read_ppm_to_vmap();
+    void read_vmap_and_creat_decorative(const vector<vector<char>> vmap);
     Tunnel create_tunnel(const vector<vector<char>> vmap, const int x, const int y);
 
     // TODO change Tunnel by decords : water/door/ect..
-    map<tuple<unsigned int, unsigned int>, Tunnel> mp;
+    map<tuple<unsigned int, unsigned int>, Tunnel> map_lvl;
 
-    Level creat_lvl(const FilePath& applicationPath);
+    Level creat_lvl(const FilePath &applicationPath);
 
 private:
     string path_file;

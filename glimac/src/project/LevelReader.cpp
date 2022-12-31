@@ -33,7 +33,7 @@ vector<string> LevelReader::parse_line(const string str)
  * Read the txt file corresponding to the level.
  * Create the different objects present in the level: treasures, monsters, etc..
  */
-void LevelReader::read_lvl()
+void LevelReader::read_lvl_txt_and_creat_objects()
 {
     string line;
     ifstream file(path_file);
@@ -78,13 +78,15 @@ void LevelReader::read_lvl()
 
 /**
  * Read the ppm file associated with the level.
- * Create the corresponding decorative objects.
+ * Create the ascii vector describing the level corresponding to the ppm: vmap.
  *
- * @return vector<vector<char>> map.
+ * Care the origin (0,0) is at the bottom left of the ppm file.
+ *
+ * @return vector<vector<char>> vmap.
  */
-vector<vector<char>> LevelReader::read_ppm()
+vector<vector<char>> LevelReader::read_ppm_to_vmap()
 {
-    vector<vector<char>> map;
+    vector<vector<char>> vmap;
     string line;
     ifstream file(path_dungeon_ppm);
     if (!file)
@@ -98,7 +100,6 @@ vector<vector<char>> LevelReader::read_ppm()
         if (line != "P3")
         {
             cout << "PPM type does not match." << endl;
-            return map;
         }
 
         // TODO check first char == '#' because comments can be anywhere.
@@ -109,42 +110,37 @@ vector<vector<char>> LevelReader::read_ppm()
         int width, height, max_color;
         file >> width >> height >> max_color;
 
-        for (int y = 0; y < height; y++)
+        for (int x = 0; x < height; x++)
         {
             vector<char> row;
-            for (int x = 0; x < width; x++)
+            for (int y = 0; y < width; y++)
             {
                 unsigned int red, green, blue;
                 file >> red >> green >> blue;
                 if (!file)
                 {
                     std::cerr << "Error reading from file around (" << x << "," << y << ")" << std::endl;
-                    return map;
                 }
                 std::cout << "RGB " << red << ", " << green << ", " << blue << std::endl;
-                // TODO creat object.
                 // Starter
                 if (red == 255 && green == 0 && blue == 0)
                 {
-                    // Starter
                     row.push_back('s');
                 }
                 // Exit.
                 if (red == 0 && green == 255 && blue == 0)
                 {
-                    // Exit.
                     row.push_back('e');
                 }
                 // Door.
                 if (red == 170 && green == 119 && blue == 34)
                 {
-                    // Door.
                     row.push_back('d');
                 }
                 // Water.
                 if (red == 0 && green == 0 && blue == 255)
                 {
-                    // Water.
+                    row.push_back('v');
                 }
                 // Tunnel.
                 if (red == 255 && green == 255 && blue == 255)
@@ -154,44 +150,43 @@ vector<vector<char>> LevelReader::read_ppm()
                 // Wall.
                 if (red == 0 && green == 0 && blue == 0)
                 {
-                    // Wall.
                     row.push_back('w');
                 }
             }
-            map.push_back(row);
+            vmap.push_back(row);
         }
-        std::reverse(map.begin(), map.end());
     }
-    return map;
+    // Change the origin position.
+    reverse(vmap.begin(), vmap.end());
+    return vmap;
 }
 
 /**
- * Read the vector corresponding to the map.
+ * Read the vector corresponding to the map level.
  * Create the corresponding decorative objects.
  *
  * @param vmap a char vector ascii representation of the map lvl.
  */
-void LevelReader::read_map(const vector<vector<char>> vmap)
+void LevelReader::read_vmap_and_creat_decorative(const vector<vector<char>> vmap)
 {
-    int y;
-    for (auto it = vmap.begin() ; it != vmap.end(); ++it)
-    //for (int y = 0; y < vmap.size(); y++)
+    for (int x = 0; x < vmap.size(); x++)
     {
-        y = (it - vmap.begin()) * 1;
-        std::cout << y << std::endl;
-        for (int x = 0; x < vmap[y].size(); x++)
+        for (int y = 0; y < vmap[x].size(); y++)
         {
-
-            // TODO creat object.
-            // Starter.
+            //  TODO creat object.
+            //  Starter.
             if (vmap[x][y] == 's')
             {
                 start = make_tuple((unsigned int)x, (unsigned int)y);
+                auto tunnel = create_tunnel(vmap, x, y);
+                map_lvl.insert({make_tuple((unsigned int)x, (unsigned int)y), tunnel});
             }
             // Exit.
             if (vmap[x][y] == 'e')
             {
                 // Exit.
+                auto tunnel = create_tunnel(vmap, x, y);
+                map_lvl.insert({make_tuple((unsigned int)x, (unsigned int)y), tunnel});
             }
             // Door.
             if (vmap[x][y] == 'd')
@@ -208,7 +203,7 @@ void LevelReader::read_map(const vector<vector<char>> vmap)
             {
                 // todo in function : check wall
                 auto tunnel = create_tunnel(vmap, x, y);
-                mp.insert({make_tuple((unsigned int)x, (unsigned int)y), tunnel});
+                map_lvl.insert({make_tuple((unsigned int)x, (unsigned int)y), tunnel});
             }
             // Wall. // ATTENTION, il n'y a rien a faire pour les murs (et le code pour wall et water sont les mêmes)
             if (vmap[x][y] == 'w')
@@ -231,13 +226,13 @@ Tunnel LevelReader::create_tunnel(const vector<vector<char>> vmap, const int x, 
     bool wall_south = false;
     bool wall_west = false;
 
-    if (vmap[x - 1][y] == 'w' || x < 0)
+    if (x == 0 || vmap[x - 1][y] == 'w')
         wall_north = true;
-    if (vmap[x][y + 1] == 'w' || y > vmap[x].size())
+    if (y == vmap[x].size() - 1 || vmap[x][y + 1] == 'w')
         wall_east = true;
-    if (vmap[x + 1][y] == 'w' || x > vmap.size())
+    if (x == vmap.size() - 1 || vmap[x + 1][y] == 'w')
         wall_south = true;
-    if (vmap[x][y - 1] == 'w' || y < 0)
+    if (y == 0 || vmap[x][y - 1] == 'w')
         wall_west = true;
 
     return Tunnel(make_tuple((unsigned int)x, (unsigned int)y), wall_north, wall_east, wall_south, wall_west);
@@ -246,36 +241,37 @@ Tunnel LevelReader::create_tunnel(const vector<vector<char>> vmap, const int x, 
 /**
  * Creat the current lvl.
  *
- * @return Lvl
+ * @return Level
  */
-Level LevelReader::creat_lvl(const FilePath& applicationPath)
+Level LevelReader::creat_lvl(const FilePath &applicationPath)
 {
+    // Read lvl txt file and creat objects : Treasures, Monstres..
+    read_lvl_txt_and_creat_objects();
 
-    read_lvl();
+    auto vmap = read_ppm_to_vmap();
 
-    auto map = read_ppm();
-
-    for (int i = 0; i < map.size(); i++)
+    for (int i = 0; i < vmap.size(); i++)
     {
-        for (int j = 0; j < map[i].size(); j++)
+        for (int j = 0; j < vmap[i].size(); j++)
 
         {
-            std::cout << map[i][j] << " ";
+            std::cout << vmap[i][j] << " ";
         }
 
         std::cout << endl;
     }
 
-    read_map(map);
+    // Read vmap and creat decorative objects : Tunnel, Water..
+    read_vmap_and_creat_decorative(vmap);
 
     std::cout << "Elements in mp1 are\n";
     std::cout << "KEY\tELEMENT\n";
-    for (auto itr = mp.begin(); itr != mp.end(); ++itr)
+    for (auto itr = map_lvl.begin(); itr != map_lvl.end(); ++itr)
     {
         std::cout
             << '\t'
             << itr->second << '\n';
     }
 
-    return Level(mp, treasures, monsters, start, applicationPath);
+    return Level(map_lvl, treasures, monsters, start, applicationPath);
 }
