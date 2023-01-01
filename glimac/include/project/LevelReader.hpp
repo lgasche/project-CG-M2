@@ -11,6 +11,7 @@
 using namespace std;
 
 #include "Treasure.hpp"
+#include "Weapon.hpp"
 #include "Monster.hpp"
 #include "element/Tunnel.hpp"
 #include "Level.hpp"
@@ -59,6 +60,7 @@ private:
     string path_dungeon_ppm;
     int nb_treasures = -1;
     map<tuple<unsigned int, unsigned int>, Treasure> treasures;
+    map<tuple<unsigned int, unsigned int>, unique_ptr<Weapon>> weapons;
     int nb_monsters = -1;
     map<tuple<unsigned int, unsigned int>, Monster> monsters;
     tuple<unsigned int, unsigned int> start;

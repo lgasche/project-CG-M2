@@ -55,11 +55,22 @@ void LevelReader::read_lvl_txt_and_creat_objects()
             // Parse data in line correspoding to the Treasure.
             getline(file, line);
             auto tokens = parse_line(line);
-            auto pos = make_tuple((unsigned int)stoi(tokens[1]), (unsigned int)stoi(tokens[2]));
-            auto treasure = Treasure((unsigned int)stoi(tokens[0]), pos, tokens[3]);
-            std::cout << treasure << std::endl;
-            // treasures.push_back(treasure);
-            treasures.insert({pos, treasure});
+            // Treasure.
+            if (tokens.size() == 7)
+            {
+                auto pos = make_tuple((unsigned int)stoi(tokens[1]), (unsigned int)stoi(tokens[2]));
+                auto treasure = Treasure((unsigned int)stoi(tokens[0]), pos, tokens[3], (unsigned int)stoi(tokens[4]), stoi(tokens[5]), tokens[6]);
+                std::cout << treasure << std::endl;
+                treasures.insert({pos, treasure});
+            }
+            // Weapon.
+            if (tokens.size() == 8)
+            {
+                auto pos = make_tuple((unsigned int)stoi(tokens[1]), (unsigned int)stoi(tokens[2]));
+                auto weapon = std::make_unique<Weapon>((unsigned int)stoi(tokens[0]), pos, tokens[3], (unsigned int)stoi(tokens[4]), stoi(tokens[5]), stoi(tokens[6]), tokens[7]);
+                std::cout << *weapon << std::endl;
+                weapons.insert({pos, move(weapon)});
+            }
         }
 
         // Part monstrers.

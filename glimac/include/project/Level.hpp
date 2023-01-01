@@ -7,6 +7,7 @@
 using namespace std;
 
 #include <project/Treasure.hpp>
+#include <project/Weapon.hpp>
 #include <project/Monster.hpp>
 #include <project/TunnelStorage.hpp>
 #include <project/Texture.hpp>
@@ -49,6 +50,8 @@ private:
     // map<tuple<unsigned int, unsigned int>, Tunnel> map_lvl;
 
     map<tuple<unsigned int, unsigned int>, Treasure> treasures;
+
+    map<tuple<unsigned int, unsigned int>, unique_ptr<Weapon>> weapons;
 
     map<tuple<unsigned int, unsigned int>, Monster> monsters;
 
