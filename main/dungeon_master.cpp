@@ -38,13 +38,13 @@ int main(int argc, char **argv)
     std::string filename = argv[1];
     auto read = LevelReader(filename);
     std::cout << read << std::endl;
-    auto lvl = read.creat_lvl(applicationPath);
-    auto start_camera = lvl.get_start();
+    auto level = read.creat_lvl(applicationPath);
+    auto start_camera = level.get_start();
 
-    //Camera camera((float)get<0>(start_camera), (float)get<1>(start_camera));
+    Camera camera((float)get<0>(start_camera), (float)get<1>(start_camera));
     std::cout << "CAMERA : " << (float)get<0>(start_camera) << " " << (float)get<1>(start_camera) << std::endl;
 
-    Camera camera(0.f, 2.f);
+    //Camera camera(0.f, 2.f);
     Vertex vertex;
     Texture texture;
     Square square;
@@ -101,14 +101,13 @@ int main(int argc, char **argv)
         glm::mat4 globalMVMatrix = camera.getViewMatrix();
         glm::mat4 projMatrix = glm::perspective(glm::radians(90.f), (widthWindow / heightWindow), 0.1f, 100.f);
         // Ajustement de la caméra pour l'ATH
-    
         glViewport(-(widthWindow - heightWindow) / 2.f, 0.f, widthWindow, heightWindow);
         
         vertex.bindingVAO();
 
-        lvl.drawLevel(square.getVertexCount(), globalMVMatrix, projMatrix);
+        level.drawLevel(square.getVertexCount(), globalMVMatrix, projMatrix);
 
-
+        // Correction de la caméra pour draw l'ATH
         glViewport(0.f, 0.f, widthWindow, heightWindow);
         //// TEST ATH
         
@@ -144,7 +143,7 @@ int main(int argc, char **argv)
     }
 
     vertex.clearData();
-    lvl.clear();
+    level.clear();
 
     return EXIT_SUCCESS;
 }

@@ -12,7 +12,7 @@ using namespace std;
 
 #include "Treasure.hpp"
 #include "Monster.hpp"
-#include "Tunnel.hpp"
+#include "element/Tunnel.hpp"
 #include "Level.hpp"
 
 class LevelReader

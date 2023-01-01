@@ -6,8 +6,6 @@
 using namespace std;
 
 #include <project/LevelReader.hpp>
-#include <project/Treasure.hpp>
-#include <project/Tunnel.hpp>
 
 /**
  * Parse the line describing an object or a monster.

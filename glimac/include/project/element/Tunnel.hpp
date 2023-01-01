@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include <glimac/glm.hpp>
-#include <project/LevelStructure.hpp>
 
 using namespace std;
 
@@ -31,6 +30,8 @@ private:
     bool wall_south;
     bool wall_west;
 
+    glm::mat4 matrix;
+
 public:
     Tunnel(const tuple<unsigned int, unsigned int> pos_, const bool wall_north_, const bool wall_east_, const bool wall_south_, const bool wall_west_) : pos{pos_},
                                                                                                                                                          wall_north{wall_north_},
@@ -38,13 +39,19 @@ public:
                                                                                                                                                          wall_south{wall_south_},
                                                                                                                                                          wall_west{wall_west_}
 
-    {
-        // TODO init datas textures.
-    }
+    {}
 
     tuple<unsigned int, unsigned int> get_pos() { return pos; };
 
-    void drawWalls(int vertex, LevelProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
-    void drawFloor(int vertex, LevelProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
-    void  drawRoof(int vertex, LevelProgram *squareProgam, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
+    bool haveNorthWall() { return wall_north; };
+    bool haveEastWall()  { return wall_east;  };
+    bool haveSouthWall() { return wall_south; };
+    bool haveWestWall()  { return wall_west;  };
+
+    glm::mat4 drawNorthWall(glm::mat4 globalMVMatrix);
+    glm::mat4  drawEastWall(glm::mat4 globalMVMatrix);
+    glm::mat4 drawSouthWall(glm::mat4 globalMVMatrix);
+    glm::mat4  drawWestWall(glm::mat4 globalMVMatrix);
+    glm::mat4     drawFloor(glm::mat4 globalMVMatrix);
+    glm::mat4      drawRoof(glm::mat4 globalMVMatrix);
 };
