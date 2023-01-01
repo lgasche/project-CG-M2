@@ -188,6 +188,7 @@ void LevelReader::read_vmap_and_creat_decorative(const vector<vector<char>> vmap
             if (vmap[x][y] == 'e')
             {
                 // Exit.
+                out = make_tuple((unsigned int)x, (unsigned int)y);
                 auto tunnel = create_tunnel(vmap, x, y);
                 map_lvl.insert({make_tuple((unsigned int)x, (unsigned int)y), tunnel});
             }
@@ -276,5 +277,5 @@ Level LevelReader::creat_lvl(const FilePath &applicationPath)
             << itr->second << '\n';
     }
 
-    return Level(map_lvl, treasures, monsters, start, applicationPath);
+    return Level(map_lvl, treasures, monsters, start, out, applicationPath);
 }

@@ -62,4 +62,5 @@ private:
     int nb_monsters = -1;
     map<tuple<unsigned int, unsigned int>, Monster> monsters;
     tuple<unsigned int, unsigned int> start;
+    tuple<unsigned int, unsigned int> out;
 };
