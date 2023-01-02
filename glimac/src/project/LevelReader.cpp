@@ -7,8 +7,6 @@
 using namespace std;
 
 #include <project/LevelReader.hpp>
-#include <project/TreasureStorage.hpp>
-#include <project/WeaponStorage.hpp>
 
 /**
  * Parse the line describing an object or a monster.
