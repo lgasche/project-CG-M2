@@ -30,6 +30,7 @@ private:
     string model;
 
 public:
+    // Weapon(const Weapon &) = delete;
     Weapon(const unsigned int id_,
            tuple<unsigned int, unsigned int> pos_,
            const string name_,
@@ -46,4 +47,7 @@ public:
 
     {
     }
+
+    string get_model() { return model; };
+    unsigned int get_type() { return type; };
 };

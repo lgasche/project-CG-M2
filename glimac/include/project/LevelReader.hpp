@@ -16,6 +16,7 @@ using namespace std;
 #include "element/Tunnel.hpp"
 #include "Level.hpp"
 #include "TreasureStorage.hpp"
+#include "Storage.hpp"
 
 class LevelReader
 {
@@ -60,12 +61,11 @@ private:
     string first_comment;
     string path_dungeon_ppm;
     int nb_treasures = -1;
-    map<tuple<unsigned int, unsigned int>, Treasure> treasures;
-    map<tuple<unsigned int, unsigned int>, unique_ptr<Weapon>> weapons;
     int nb_monsters = -1;
-    map<tuple<unsigned int, unsigned int>, Monster> monsters;
     tuple<unsigned int, unsigned int> start;
     tuple<unsigned int, unsigned int> out;
 
-    map<unsigned int, TreasureStorage> treasureStorages;
+    map<unsigned int, Storage<Treasure>> treasureStorages;
+    map<unsigned int, Storage<Weapon>> weaponStorages;
+    map<unsigned int, Storage<Monster>> monsterStorages;
 };

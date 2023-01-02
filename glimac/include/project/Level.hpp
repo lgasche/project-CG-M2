@@ -10,7 +10,7 @@ using namespace std;
 #include <project/Weapon.hpp>
 #include <project/Monster.hpp>
 #include <project/TunnelStorage.hpp>
-#include <project/TreasureStorage.hpp>
+#include <project/Storage.hpp>
 #include <project/Texture.hpp>
 #include <project/Square.hpp>
 #include <project/ATH.hpp>
@@ -24,12 +24,14 @@ class Level
 
 public:
     Level(const map<tuple<unsigned int, unsigned int>, Tunnel> map_lvl_,
-          map<unsigned int, TreasureStorage> treasureStorages_,
-          map<tuple<unsigned int, unsigned int>, Monster> monsters_,
+          map<unsigned int, Storage<Treasure>> treasureStorages_,
+          map<unsigned int, Storage<Weapon>> weaponStorage_,
+          map<unsigned int, Storage<Monster>> monsterStorage_,
           tuple<unsigned int, unsigned int> start_,
           tuple<unsigned int, unsigned int> out_,
           const FilePath &applicationPath) : treasureStorages{treasureStorages_},
-                                             monsters{monsters_},
+                                             weaponStorage{weaponStorage_},
+                                             monsterStorage{monsterStorage_},
                                              position{start_},
                                              start{start_},
                                              out{out_}
@@ -45,15 +47,10 @@ public:
 
 private:
     TunnelStorage tunnelStorage;
-    // map<tuple<unsigned int, unsigned int>, Tunnel> map_lvl;
 
-    map<unsigned int, TreasureStorage> treasureStorages;
-
-    // map<tuple<unsigned int, unsigned int>, Treasure> treasures;
-
-    map<tuple<unsigned int, unsigned int>, unique_ptr<Weapon>> weapons;
-
-    map<tuple<unsigned int, unsigned int>, Monster> monsters;
+    map<unsigned int, Storage<Treasure>> treasureStorages;
+    map<unsigned int, Storage<Weapon>> weaponStorage;
+    map<unsigned int, Storage<Monster>> monsterStorage;
 
     tuple<unsigned int, unsigned int> position; // Player coordinate.
     tuple<unsigned int, unsigned int> start;    // Start coordinate.

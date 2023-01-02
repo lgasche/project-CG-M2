@@ -50,4 +50,7 @@ public:
 
     {
     }
+
+    string get_model() { return model; };
+    unsigned int get_type() { return type; };
 };

@@ -8,6 +8,7 @@ using namespace std;
 
 #include <project/LevelReader.hpp>
 #include <project/TreasureStorage.hpp>
+#include <project/WeaponStorage.hpp>
 
 /**
  * Parse the line describing an object or a monster.
@@ -71,26 +72,41 @@ void LevelReader::read_lvl_txt_and_creat_objects()
                 {
                     map<tuple<unsigned int, unsigned int>, Treasure> treasures;
                     treasures.insert({pos, treasure});
-                    auto storage = TreasureStorage(treasures);
+                    auto storage = Storage<Treasure>(treasures);
+                    // auto storage = TreasureStorage(treasures);
                     treasureStorages.insert(make_pair(type, storage));
                 }
                 // Storage exist.
-                if (treasureStorages.count(type) == 1)
+                else if (treasureStorages.count(type) == 1)
                 {
                     auto itr = treasureStorages.find(type);
                     auto storage = itr->second;
                     storage.add(pos, treasure);
                 }
-                // treasures.insert({pos, treasure});
             }
 
             // Weapon.
             if (tokens.size() == 8)
             {
                 auto pos = make_tuple((unsigned int)stoi(tokens[1]), (unsigned int)stoi(tokens[2]));
-                auto weapon = std::make_unique<Weapon>((unsigned int)stoi(tokens[0]), pos, tokens[3], (unsigned int)stoi(tokens[4]), stoi(tokens[5]), stoi(tokens[6]), tokens[7]);
-                std::cout << *weapon << std::endl;
-                weapons.insert({pos, move(weapon)});
+                auto type = (unsigned int)stoi(tokens[4]);
+                auto weapon = Weapon((unsigned int)stoi(tokens[0]), pos, tokens[3], type, stoi(tokens[5]), stoi(tokens[6]), tokens[7]);
+                std::cout << weapon << std::endl;
+                // Storage don't exist.
+                if (weaponStorages.count(type) == 0)
+                {
+                    map<tuple<unsigned int, unsigned int>, Weapon> weapons;
+                    weapons.insert({pos, weapon});
+                    auto storage = Storage<Weapon>(weapons);
+                    weaponStorages.insert(make_pair(type, storage));
+                }
+                // Storage exist.
+                else if (weaponStorages.count(type) == 1)
+                {
+                    auto itr = weaponStorages.find(type);
+                    auto storage = itr->second;
+                    storage.add(pos, weapon);
+                }
             }
         }
 
@@ -103,9 +119,25 @@ void LevelReader::read_lvl_txt_and_creat_objects()
             getline(file, line);
             auto tokens = parse_line(line);
             auto pos = make_tuple((unsigned int)stoi(tokens[1]), (unsigned int)stoi(tokens[2]));
-            auto monster = Monster((unsigned int)stoi(tokens[0]), pos, tokens[3], (unsigned int)stoi(tokens[4]), stoi(tokens[5]), stoi(tokens[6]), stoi(tokens[7]), tokens[8]);
+            auto type = (unsigned int)stoi(tokens[4]);
+            auto monster = Monster((unsigned int)stoi(tokens[0]), pos, tokens[3], type, stoi(tokens[5]), stoi(tokens[6]), stoi(tokens[7]), tokens[8]);
             std::cout << monster << std::endl;
-            monsters.insert({pos, monster});
+
+            // Storage don't exist.
+            if (monsterStorages.count(type) == 0)
+            {
+                map<tuple<unsigned int, unsigned int>, Monster> monsters;
+                monsters.insert({pos, monster});
+                auto storage = Storage<Monster>(monsters);
+                monsterStorages.insert(make_pair(type, storage));
+            }
+            // Storage exist.
+            else if (monsterStorages.count(type) == 1)
+            {
+                auto itr = monsterStorages.find(type);
+                auto storage = itr->second;
+                storage.add(pos, monster);
+            }
         }
     }
     file.close();
@@ -309,5 +341,5 @@ Level LevelReader::creat_lvl(const FilePath &applicationPath)
             << itr->second << '\n';
     }
 
-    return Level(map_lvl, treasureStorages, monsters, start, out, applicationPath);
+    return Level(map_lvl, treasureStorages, weaponStorages, monsterStorages, start, out, applicationPath);
 }

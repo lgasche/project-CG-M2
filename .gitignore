@@ -36,3 +36,7 @@
 
 # .exe
 DungeonMaster
+
+# Build folder.
+build/
+build/.cmake
