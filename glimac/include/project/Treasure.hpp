@@ -6,6 +6,8 @@
 
 using namespace std;
 
+#include <project/Player.hpp>
+
 class Treasure
 {
     friend std::ostream &operator<<(std::ostream &stream, const Treasure &treasure)
@@ -44,4 +46,6 @@ public:
 
     string get_model() { return model; };
     unsigned int get_type() { return type; };
+    tuple<unsigned int, unsigned int> getPos() const { return pos; }
+    bool action(Player &player);
 };

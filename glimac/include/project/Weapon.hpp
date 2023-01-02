@@ -6,6 +6,8 @@
 
 using namespace std;
 
+class Player;
+
 class Weapon
 {
     friend std::ostream &operator<<(std::ostream &stream, const Weapon &weapon)
@@ -50,4 +52,6 @@ public:
 
     string get_model() { return model; };
     unsigned int get_type() { return type; };
+    tuple<unsigned int, unsigned int> getPos() const { return pos; }
+    bool action(Player &player);
 };

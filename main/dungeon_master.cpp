@@ -5,14 +5,13 @@
 #include <iostream>
 #include <iterator>
 
-//#include <project/Square.hpp>
+// #include <project/Square.hpp>
 #include <project/LevelReader.hpp>
 #include <project/Camera.hpp>
 #include <project/Vertex.hpp>
 #include <project/ATH.hpp>
 
 using namespace glimac;
-
 
 int main(int argc, char **argv)
 {
@@ -44,18 +43,16 @@ int main(int argc, char **argv)
     Camera camera((float)get<0>(start_camera), (float)get<1>(start_camera));
     std::cout << "CAMERA : " << (float)get<0>(start_camera) << " " << (float)get<1>(start_camera) << std::endl;
 
-    //Camera camera(0.f, 2.f);
+    // Camera camera(0.f, 2.f);
     Vertex vertex;
     Texture texture;
     Square square;
     ATH ath(applicationPath);
 
-
     glEnable(GL_DEPTH_TEST);
     // Gestion de la transparence
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 
     // VBO - VAO
     vertex.sendData(square.getVertexCount(), square.getDataPointer());
@@ -76,35 +73,49 @@ int main(int argc, char **argv)
                 done = true; // Leave the loop after this iteration
             }
         }
-        
-        // Detection of the click and update camera 
-        ath.update(camera.update()); 
-        if(camera.movementCamera() && windowManager.isMouseButtonPressed(SDL_BUTTON_LEFT)){
+
+        // Detection of the click and update camera
+        ath.update(camera.update());
+        if (camera.movementCamera() && windowManager.isMouseButtonPressed(SDL_BUTTON_LEFT))
+        {
             boutonValue = ath.clickCoordinate(windowManager.getMousePosition(), widthWindow, heightWindow);
-            if(level.canMove(camera.prediction(boutonValue))) {
-                switch(boutonValue)
+            if (level.canMove(camera.prediction(boutonValue)))
+            {
+                switch (boutonValue)
                 {
-                    case HighLeft:   camera.turnLeft(true);   break;
-                    case HighMiddle: camera.moveAhead(true);  break;
-                    case HighRight:  camera.turnLeft(false);  break;
-                    case LowLeft:    camera.moveLeft(true);   break;
-                    case LowMiddle:  camera.moveAhead(false); break;
-                    case LowRight:   camera.moveLeft(false);  break;
+                case HighLeft:
+                    camera.turnLeft(true);
+                    break;
+                case HighMiddle:
+                    camera.moveAhead(true);
+                    break;
+                case HighRight:
+                    camera.turnLeft(false);
+                    break;
+                case LowLeft:
+                    camera.moveLeft(true);
+                    break;
+                case LowMiddle:
+                    camera.moveAhead(false);
+                    break;
+                case LowRight:
+                    camera.moveLeft(false);
+                    break;
+                case Base:
+                    level.action(camera);
+                    break;
                 }
             }
         }
 
-
-
         // Nettoyage des buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
         glm::mat4 globalMVMatrix = camera.getViewMatrix();
         glm::mat4 projMatrix = glm::perspective(glm::radians(90.f), (widthWindow / heightWindow), 0.1f, 100.f);
         // Ajustement de la caméra pour l'ATH
         glViewport(-(widthWindow - heightWindow) / 2.f, 0.f, widthWindow, heightWindow);
-        
+
         vertex.bindingVAO();
 
         // LEVEL
@@ -116,9 +127,9 @@ int main(int argc, char **argv)
 
         vertex.debindingVAO();
 
-        // Débindind de la texture principale 
+        // Débindind de la texture principale
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, 0); // débind sur l'unité GL_TEXTURE0     
+        glBindTexture(GL_TEXTURE_2D, 0); // débind sur l'unité GL_TEXTURE0
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, 0); // débind sur l'unité GL_TEXTURE1
 

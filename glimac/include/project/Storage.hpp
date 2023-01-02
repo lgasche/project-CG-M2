@@ -12,6 +12,14 @@ using namespace std;
 template <typename Item>
 class Storage
 {
+    friend std::ostream &operator<<(std::ostream &stream, const Storage<Item> &storage)
+    {
+        for (auto &i : storage.items)
+        {
+            stream << get<0>(i.first) << "," << get<1>(i.first) << " | ";
+        }
+        return stream;
+    }
 
 private:
     map<tuple<unsigned int, unsigned int>, Item> items;
@@ -43,6 +51,17 @@ public:
     }
 
     void add(tuple<unsigned int, unsigned int> pos, Item item) { items.insert({pos, item}); };
+    bool triggerAction(std::tuple<unsigned int, unsigned int> pos, Player &player)
+    {
+        auto item = items.find(pos);
+        if (item == items.end())
+            return false;
+        std::cout << "tes là fdp?" << *this << std::endl;
+        item->second.action(player);
+        items.erase(pos);
+        std::cout << "tes là fdp?" << *this << std::endl;
+        return true;
+    }
     // void draw(int vertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
     // void clear();
 };

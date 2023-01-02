@@ -75,10 +75,10 @@ void LevelReader::read_lvl_txt_and_creat_objects()
                     treasureStorages.insert(make_pair(type, storage));
                 }
                 // Storage exist.
-                else if (treasureStorages.count(type) == 1)
+                else
                 {
                     auto itr = treasureStorages.find(type);
-                    auto storage = itr->second;
+                    auto &storage = itr->second;
                     storage.add(pos, treasure);
                 }
             }
@@ -99,10 +99,10 @@ void LevelReader::read_lvl_txt_and_creat_objects()
                     weaponStorages.insert(make_pair(type, storage));
                 }
                 // Storage exist.
-                else if (weaponStorages.count(type) == 1)
+                else
                 {
                     auto itr = weaponStorages.find(type);
-                    auto storage = itr->second;
+                    auto &storage = itr->second;
                     storage.add(pos, weapon);
                 }
             }
@@ -130,10 +130,10 @@ void LevelReader::read_lvl_txt_and_creat_objects()
                 monsterStorages.insert(make_pair(type, storage));
             }
             // Storage exist.
-            else if (monsterStorages.count(type) == 1)
+            else
             {
                 auto itr = monsterStorages.find(type);
-                auto storage = itr->second;
+                auto &storage = itr->second;
                 storage.add(pos, monster);
             }
         }

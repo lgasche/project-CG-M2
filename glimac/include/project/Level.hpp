@@ -3,6 +3,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <tuple>
 
 using namespace std;
 
@@ -14,6 +15,8 @@ using namespace std;
 #include <project/Texture.hpp>
 #include <project/Square.hpp>
 #include <project/ATH.hpp>
+#include <project/Camera.hpp>
+#include <project/Player.hpp>
 
 class Level
 {
@@ -45,6 +48,8 @@ public:
     void drawLevel(int squareVertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
     bool canMove(std::tuple<unsigned int, unsigned int> pos);
 
+    void action(Camera camera);
+
 private:
     TunnelStorage tunnelStorage;
 
@@ -56,11 +61,9 @@ private:
     tuple<unsigned int, unsigned int> start;    // Start coordinate.
     tuple<unsigned int, unsigned int> out;      // Exit coordinate.
 
-    ////////////////////////////
-    // Texture textureWall;
-    // Texture textureRoof;
-    // Texture textureFloor;
     Texture textureCreature;
+
+    Player player{3, 2, 10};
 
     // LevelProgram squareProgam;
 };
