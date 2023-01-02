@@ -8,15 +8,20 @@ Camera::Camera(float x, float y){
 	indice = 0.f;
 	computeDirectionVectors();
 }
+
+int Camera::update ()
+{
+	if(isTurningLeft)  { turnLeft(true);   return 1; }
+    if(isTurningRight) { turnLeft(false);  return 3; }
+    if(isMovingLeft)   { moveLeft(true);   return 4; }
+    if(isMovingRight)  { moveLeft(false);  return 6; }
+    if(isMovingAhead)  { moveAhead(true);  return 2; }
+    if(isMovingBack)   { moveAhead(false); return 5; }
+    return 0;
+}
  
 bool Camera::movementCamera()
 {
-	if(isTurningLeft) 	turnLeft(true);
-    if(isTurningRight) 	turnLeft(false);
-    if(isMovingLeft)  	moveLeft(true);
-    if(isMovingRight) 	moveLeft(false);
-    if(isMovingAhead)  	moveAhead(true);
-    if(isMovingBack) 	moveAhead(false);
 	return !isTurningLeft && !isTurningRight && !isMovingLeft && !isMovingRight && !isMovingAhead && !isMovingBack;
 }
 

@@ -6,7 +6,7 @@ Texture::Texture(){
 
 void Texture::loadTexture(const FilePath& filepath)
 {
-	std::unique_ptr<Image> image = loadImage(filepath);
+    std::unique_ptr<Image> image = loadImage(filepath);
 
    glGenTextures(1, &texture);
     // Bindind de la texture
@@ -20,20 +20,26 @@ void Texture::loadTexture(const FilePath& filepath)
 }
 
 
-void Texture::bindingTexture()
+void Texture::bindingFirstTexture()
 {
-	glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture); // la texture est bindée sur l'unité GL_TEXTURE0
+}
+
+void Texture::bindingSecondTexture()
+{
+    glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, texture); // la texture est bindée sur l'unité GL_TEXTURE0
 }
 
 void Texture::debindingTexture()
 {
-	// Débindind de la texture 
-	glActiveTexture(GL_TEXTURE0);
+    // Débindind de la texture 
+    glActiveTexture(GL_TEXTURE0);
    glBindTexture(GL_TEXTURE_2D, 0); // débind sur l'unité GL_TEXTURE0     
 }
 
 void Texture::clearTexture()
 {
-	glDeleteTextures(1, &texture);
+    glDeleteTextures(1, &texture);
 }

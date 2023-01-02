@@ -9,7 +9,7 @@
 #include <project/LevelReader.hpp>
 #include <project/Camera.hpp>
 #include <project/Vertex.hpp>
-#include <project/ATHStructure.hpp>
+#include <project/ATH.hpp>
 
 using namespace glimac;
 
@@ -48,8 +48,8 @@ int main(int argc, char **argv)
     Vertex vertex;
     Texture texture;
     Square square;
+    ATH ath(applicationPath);
 
-    ATHProgram athProgram(applicationPath);
 
     glEnable(GL_DEPTH_TEST);
     // Gestion de la transparence
@@ -74,24 +74,19 @@ int main(int argc, char **argv)
                 done = true; // Leave the loop after this iteration
             }
         }
-
-        if(camera.movementCamera()) {
-            if(windowManager.isKeyPressed(SDLK_a)) camera.turnLeft(true);      
-            if(windowManager.isKeyPressed(SDLK_e)) camera.turnLeft(false);
-            if(windowManager.isKeyPressed(SDLK_q)) camera.moveLeft(true);
-            if(windowManager.isKeyPressed(SDLK_d)) camera.moveLeft(false);
-            if(windowManager.isKeyPressed(SDLK_z)) camera.moveAhead(true);
-            if(windowManager.isKeyPressed(SDLK_s)) camera.moveAhead(false);
-        } 
-
-        if(windowManager.isMouseButtonPressed(SDL_BUTTON_LEFT)){
-            auto mousePos = windowManager.getMousePosition();
-
-            if(mousePos.x > widthWindow * (2.f / 3.f))
-            std::cout << mousePos << std::endl;
-
-            //camera.rotateLeft(-2*mousePosX);
-            //camera.rotateUp(-2*mousePosY);
+        
+        // Detection of the click and update camera 
+        ath.update(camera.update()); 
+        if(camera.movementCamera() && windowManager.isMouseButtonPressed(SDL_BUTTON_LEFT)){
+            switch(ath.clickCoordinate(windowManager.getMousePosition(), widthWindow, heightWindow))
+            {
+                case 1: camera.turnLeft(true);   break;
+                case 2: camera.moveAhead(true);  break;
+                case 3: camera.turnLeft(false);  break;
+                case 4: camera.moveLeft(true);   break;
+                case 5: camera.moveAhead(false); break;
+                case 6: camera.moveLeft(false);  break;
+            }
         }
 
         // Nettoyage des buffers
@@ -105,38 +100,20 @@ int main(int argc, char **argv)
         
         vertex.bindingVAO();
 
+        // LEVEL
         level.drawLevel(square.getVertexCount(), globalMVMatrix, projMatrix);
-
         // Correction de la caméra pour draw l'ATH
         glViewport(0.f, 0.f, widthWindow, heightWindow);
-        //// TEST ATH
-        
-        athProgram.mProgram.use();
-        glUniform1i(athProgram.uTexture, 0);
-
-        //projMatrix = glm::perspective(glm::radians(100.f), ((widthWindow -(widthWindow - heightWindow) / 2.f) / heightWindow), 0.1f, 100.f);
-
-        //texture.bindingFloorTexture();
-        glm::mat4 wallMVMatrix = glm::translate(glm::mat4(1), glm::vec3(0.125f, 0.f, -0.25f));
-        wallMVMatrix = glm::scale(wallMVMatrix,     glm::vec3(0.25f));
-        glUniformMatrix4fv(athProgram.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projMatrix * wallMVMatrix));
-        glUniformMatrix4fv(athProgram.uMVMatrix, 1, GL_FALSE, glm::value_ptr(wallMVMatrix));
-        glUniformMatrix4fv(athProgram.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(wallMVMatrix))));
-        glDrawArrays(GL_TRIANGLES, 0, square.getVertexCount());
-
-        wallMVMatrix = glm::translate(glm::mat4(1), glm::vec3(0.125f, -0.25f, -0.25f));
-        wallMVMatrix = glm::scale(wallMVMatrix,     glm::vec3(0.25f));
-        glUniformMatrix4fv(athProgram.uMVPMatrix, 1, GL_FALSE, glm::value_ptr(projMatrix * wallMVMatrix));
-        glUniformMatrix4fv(athProgram.uMVMatrix, 1, GL_FALSE, glm::value_ptr(wallMVMatrix));
-        glUniformMatrix4fv(athProgram.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(wallMVMatrix))));
-        glDrawArrays(GL_TRIANGLES, 0, square.getVertexCount());
-    
+        // ATH
+        ath.drawATH(square.getVertexCount(), projMatrix);
 
         vertex.debindingVAO();
 
         // Débindind de la texture principale 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, 0); // débind sur l'unité GL_TEXTURE0     
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, 0); // débind sur l'unité GL_TEXTURE1
 
         // Update the display
         windowManager.swapBuffers();
@@ -144,6 +121,7 @@ int main(int argc, char **argv)
 
     vertex.clearData();
     level.clear();
+    ath.clear();
 
     return EXIT_SUCCESS;
 }

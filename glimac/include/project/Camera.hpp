@@ -9,6 +9,7 @@ class Camera
 {
 	public:
 		Camera(float x, float y);
+		int  update();
 		bool movementCamera();
 		void moveAhead(bool movingAhead);
 		void moveLeft(bool movingLeft);

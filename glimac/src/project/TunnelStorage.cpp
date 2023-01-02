@@ -40,7 +40,7 @@ void TunnelStorage::drawTunnels(int vertex, glm::mat4 globalMVMatrix, glm::mat4 
 	addLight(globalMVMatrix);
 
 	// Walls
-	textureWall.bindingTexture();
+	textureWall.bindingFirstTexture();
 	for (auto it = tunnels.begin(); it != tunnels.end(); it++)
 	{
 		if(it->second.haveNorthWall()) addMatrix(vertex, projMatrix, it->second.drawNorthWall(globalMVMatrix));
@@ -50,14 +50,14 @@ void TunnelStorage::drawTunnels(int vertex, glm::mat4 globalMVMatrix, glm::mat4 
 	}
 
 	// // Roofs
-	textureRoof.bindingTexture();
+	textureRoof.bindingFirstTexture();
 	for (auto it = tunnels.begin(); it != tunnels.end(); it++)
 	{
 		addMatrix(vertex, projMatrix, it->second.drawRoof(globalMVMatrix));
 	}
 
 	// Floors
-	textureFloor.bindingTexture();
+	textureFloor.bindingFirstTexture();
 	for (auto it = tunnels.begin(); it != tunnels.end(); it++)
 	{
 		addMatrix(vertex, projMatrix, it->second.drawFloor(globalMVMatrix));

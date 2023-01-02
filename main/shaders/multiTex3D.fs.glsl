@@ -7,12 +7,11 @@ in vec3 vNormal_vs;  // Normale du sommet transformé dans l'espace View
 in vec2 vTexCoords; // Coordonnées de texture du sommet
 
 // Sorties du shader
-out vec3 fFragColor;
+out vec4 fFragColor;
 
 uniform sampler2D uTexture;
 uniform sampler2D uTexture2;
 
 void main() {
-    //fFragColor = normalize(vNormal_vs);
-    fFragColor = texture(uTexture, vTexCoords).xyz + texture(uTexture2, vTexCoords).xyz;
+    fFragColor = texture(uTexture, vTexCoords) + texture(uTexture2, vTexCoords);
 }

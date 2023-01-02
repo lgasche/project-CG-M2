@@ -10,7 +10,8 @@ class Texture
 	public:
 		Texture();
 		void loadTexture(const FilePath& filepath);
-		void bindingTexture();
+		void bindingFirstTexture();
+		void bindingSecondTexture();
 		void debindingTexture();
 		void clearTexture();
 
