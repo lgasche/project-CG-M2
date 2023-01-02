@@ -47,4 +47,10 @@ public:
 
     void monay(int golds_) { golds += golds_; }
     void hpIsLife(int hp_) { hp += hp_; }
+    int attack() const { return atk + (weapon != nullptr ? weapon->getAtk() : 0); }
+    void damage(int dmgTaken)
+    {
+        auto dmg = max(dmgTaken - def - (weapon != nullptr ? weapon->getDef() : 0), 0);
+        hp -= dmg;
+    }
 };

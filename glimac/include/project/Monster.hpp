@@ -3,6 +3,7 @@
 #include <tuple>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -56,5 +57,14 @@ public:
     string get_model() { return model; };
     unsigned int get_type() { return type; };
     tuple<unsigned int, unsigned int> getPos() const { return pos; }
-    bool action(Player &player) { return false; }
+    bool action(Player &player)
+    {
+        auto dmgTaken = max(player.attack() - def, 0);
+        hp -= dmgTaken;
+        std::cout << "MONSTER " << hp << std::endl;
+        if (hp <= 0)
+            return true;
+        player.damage(atk);
+        return false;
+    }
 };

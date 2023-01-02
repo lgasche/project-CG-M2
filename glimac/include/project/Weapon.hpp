@@ -54,4 +54,6 @@ public:
     unsigned int get_type() { return type; };
     tuple<unsigned int, unsigned int> getPos() const { return pos; }
     bool action(Player &player);
+    int getAtk() const { return atk; }
+    int getDef() const { return def; }
 };

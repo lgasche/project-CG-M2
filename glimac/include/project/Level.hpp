@@ -63,7 +63,7 @@ private:
 
     Texture textureCreature;
 
-    Player player{3, 2, 10};
+    Player player{20, 10, 10};
 
     // LevelProgram squareProgam;
 };

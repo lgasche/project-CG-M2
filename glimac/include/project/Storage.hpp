@@ -56,10 +56,8 @@ public:
         auto item = items.find(pos);
         if (item == items.end())
             return false;
-        std::cout << "tes là fdp?" << *this << std::endl;
-        item->second.action(player);
-        items.erase(pos);
-        std::cout << "tes là fdp?" << *this << std::endl;
+        if (item->second.action(player))
+            items.erase(pos);
         return true;
     }
     // void draw(int vertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
