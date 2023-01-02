@@ -12,7 +12,7 @@ using namespace std;
 #include <project/TunnelStorage.hpp>
 #include <project/Texture.hpp>
 #include <project/Square.hpp>
-#include <project/LevelStructure.hpp>
+#include <project/ATH.hpp>
 
 class Level
 {
@@ -29,6 +29,7 @@ public:
           tuple<unsigned int, unsigned int> out_,
           const FilePath &applicationPath) : treasures{treasures_},
                                              monsters{monsters_},
+                                             position{start_},
                                              start{start_},
                                              out{out_}
     {
@@ -40,10 +41,11 @@ public:
         textureCreature.loadTexture("../assets/textures/Creature_1.png");
     }
 
-    tuple<unsigned int, unsigned int> get_start() { return start; }
+    tuple<unsigned int, unsigned int> get_start() { return start; };
 
     void clear();
     void drawLevel(int squareVertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
+    bool canMove(std::tuple<unsigned int, unsigned int> pos);
 
 private:
     TunnelStorage tunnelStorage;
@@ -55,8 +57,9 @@ private:
 
     map<tuple<unsigned int, unsigned int>, Monster> monsters;
 
-    tuple<unsigned int, unsigned int> start; // Start coordinate.
-    tuple<unsigned int, unsigned int> out;   // Exit coordinate.
+    tuple<unsigned int, unsigned int> position; // Player coordinate.
+    tuple<unsigned int, unsigned int> start;   // Start coordinate.
+    tuple<unsigned int, unsigned int> out;    // Exit coordinate.
 
     ////////////////////////////
     // Texture textureWall;

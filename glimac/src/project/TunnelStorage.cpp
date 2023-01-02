@@ -31,6 +31,15 @@ void TunnelStorage::addMatrix(int vertex, glm::mat4 projMatrix, glm::mat4 matrix
     glDrawArrays(GL_TRIANGLES, 0, vertex);
 }
 
+bool TunnelStorage::canMove(std::tuple<unsigned int, unsigned int>  pos)
+{
+	for (auto it = tunnels.begin(); it != tunnels.end(); it++)
+	{
+		if(it->second.get_pos() == pos)  return true;
+	}
+	return false;
+}
+
 void TunnelStorage::drawTunnels(int vertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix)
 {	
 	tunnelProgam.mProgram.use();

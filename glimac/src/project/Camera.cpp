@@ -19,6 +19,38 @@ int Camera::update ()
     if(isMovingBack)   { moveAhead(false); return 5; }
     return 0;
 }
+
+std::tuple<unsigned int, unsigned int> Camera::prediction(ATHBouton boutonValue)
+{
+	unsigned int x = position.x;
+	unsigned int y = position.z;
+
+	if((dir == North && boutonValue == HighMiddle) || 
+	   (dir == East  && boutonValue == LowLeft)    || 
+	   (dir == South && boutonValue == LowMiddle)  ||
+	   (dir == West  && boutonValue == LowRight)) 
+		return std::make_tuple(x + 1, y    );
+
+	if((dir == South && boutonValue == HighMiddle) || 
+	   (dir == West  && boutonValue == LowLeft)    || 
+	   (dir == North && boutonValue == LowMiddle)  ||
+	   (dir == East  && boutonValue == LowRight))
+		return std::make_tuple(x - 1, y    );
+
+	if((dir == East  && boutonValue == HighMiddle) || 
+	   (dir == North && boutonValue == LowRight)   || 
+	   (dir == South && boutonValue == LowLeft)    || 
+	   (dir == West  && boutonValue == LowMiddle))
+		return std::make_tuple(x    , y + 1);
+
+	if((dir == West  && boutonValue == HighMiddle) || 
+	   (dir == South && boutonValue == LowRight)   || 
+	   (dir == North && boutonValue == LowLeft)    || 
+	   (dir == East  && boutonValue == LowMiddle))
+		return std::make_tuple(x    , y - 1);
+
+	return std::make_tuple(x, y);
+}
  
 bool Camera::movementCamera()
 {
@@ -26,7 +58,7 @@ bool Camera::movementCamera()
 }
 
 void Camera::computeDirectionVectors(){
-	Phi = (Phi < M_PI) ? M_PI * 3.f : ((Phi > M_PI * 5.f) ? M_PI : Phi); // Correction du nombre PHI avec un Min et un Max pour éviter les grandes valeurs;
+	Phi = (Phi < M_PI) ? M_PI * 3.f : ((Phi > M_PI * 5.f) ? M_PI : Phi); // Correction du nombre PHI avec un Min et un Max pour éviter les grandes valeurs
 	frontVector = glm::vec3(cos(0.f) * sin(Phi)    , sin(0.f), cos(0.f) * cos(Phi));
 	leftVector  = glm::vec3(sin(Phi + (M_PI / 2.f)), 0       , cos(Phi + (M_PI / 2.f)));
 	upVector = glm::cross(frontVector, leftVector);
@@ -80,8 +112,17 @@ void Camera::turnLeft(bool turningLeft)
 	if(indice >= 100.f) 
 	{
 		indice = 0.f;
-		if(turningLeft)  isTurningLeft  = false;
-		if(!turningLeft) isTurningRight = false;
+		if(turningLeft) 
+		{ 
+			Direction n = Direction((dir - 1) % 4); 
+			dir = (n >= 0) ? n : Direction(3);
+			isTurningLeft  = false; 
+		}
+		if(!turningLeft) 
+		{ 
+			dir = Direction((dir + 1) % 4); 
+			isTurningRight = false; 
+		}
 		return;
 	}
 	/*

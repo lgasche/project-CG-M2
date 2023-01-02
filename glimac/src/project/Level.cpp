@@ -17,3 +17,10 @@ void Level::clear()
 	textureCreature.clearTexture();
 	*/
 }
+
+bool Level::canMove(std::tuple<unsigned int, unsigned int> pos)
+{
+	//std::cout << get<0>(pos) << " " << get<1>(pos) << std::endl;
+	if(!tunnelStorage.canMove(pos)) return false;
+	return true;
+}

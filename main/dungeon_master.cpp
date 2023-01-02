@@ -61,6 +61,8 @@ int main(int argc, char **argv)
     vertex.sendData(square.getVertexCount(), square.getDataPointer());
     vertex.indicationVertices();
 
+    ATHBouton boutonValue;
+
     // Application loop:
     bool done = false;
     while (!done)
@@ -78,16 +80,21 @@ int main(int argc, char **argv)
         // Detection of the click and update camera 
         ath.update(camera.update()); 
         if(camera.movementCamera() && windowManager.isMouseButtonPressed(SDL_BUTTON_LEFT)){
-            switch(ath.clickCoordinate(windowManager.getMousePosition(), widthWindow, heightWindow))
-            {
-                case 1: camera.turnLeft(true);   break;
-                case 2: camera.moveAhead(true);  break;
-                case 3: camera.turnLeft(false);  break;
-                case 4: camera.moveLeft(true);   break;
-                case 5: camera.moveAhead(false); break;
-                case 6: camera.moveLeft(false);  break;
+            boutonValue = ath.clickCoordinate(windowManager.getMousePosition(), widthWindow, heightWindow);
+            if(level.canMove(camera.prediction(boutonValue))) {
+                switch(boutonValue)
+                {
+                    case HighLeft:   camera.turnLeft(true);   break;
+                    case HighMiddle: camera.moveAhead(true);  break;
+                    case HighRight:  camera.turnLeft(false);  break;
+                    case LowLeft:    camera.moveLeft(true);   break;
+                    case LowMiddle:  camera.moveAhead(false); break;
+                    case LowRight:   camera.moveLeft(false);  break;
+                }
             }
         }
+
+
 
         // Nettoyage des buffers
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

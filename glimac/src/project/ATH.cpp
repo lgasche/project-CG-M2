@@ -13,44 +13,44 @@ ATH::ATH(const FilePath& applicationPath) {
 	textureLowRight.loadTexture("../assets/textures/ATH_1_7.png");
 }
 
-int ATH::clickCoordinate(glm::ivec2 mousePos, float widthWindow, float heightWindow) {
+ATHBouton ATH::clickCoordinate(glm::ivec2 mousePos, float widthWindow, float heightWindow) {
 	// Hight Left Bouton position
 	if(mousePos.x > widthWindow  * (2.f / 3.f) + widthWindow  * (1.f / 3.f) * (20.f / 100.f) &&
 	   mousePos.x < widthWindow  * (2.f / 3.f) + widthWindow  * (1.f / 3.f) * (40.f / 100.f) &&
 	   mousePos.y > heightWindow * (1.f / 2.f) + heightWindow * (1.f / 2.f) * (36.f / 100.f) &&
 	   mousePos.y < heightWindow * (1.f / 2.f) + heightWindow * (1.f / 2.f) * (57.f / 100.f))   
-		return 1;
+		return HighLeft;
 	// Hight Middle Bouton position
     if(mousePos.x > widthWindow  *  (2.f / 3.f) + widthWindow * (1.f / 3.f) * (40.f / 100.f) &&
 	   mousePos.x < widthWindow  *  (2.f / 3.f) + widthWindow * (1.f / 3.f) * (60.f / 100.f) &&
 	   mousePos.y > heightWindow * (1.f / 2.f) + heightWindow * (1.f / 2.f) * (36.f / 100.f) &&
 	   mousePos.y < heightWindow * (1.f / 2.f) + heightWindow * (1.f / 2.f) * (57.f / 100.f))
-        return 2;
+        return HighMiddle;
     // Hight Right Bouton position
  	if(mousePos.x > widthWindow  * (2.f / 3.f) + widthWindow  * (1.f / 3.f) * (60.f / 100.f) &&
 	   mousePos.x < widthWindow  * (2.f / 3.f) + widthWindow  * (1.f / 3.f) * (80.f / 100.f) &&
 	   mousePos.y > heightWindow * (1.f / 2.f) + heightWindow * (1.f / 2.f) * (36.f / 100.f) &&
 	   mousePos.y < heightWindow * (1.f / 2.f) + heightWindow * (1.f / 2.f) * (57.f / 100.f))
-        return 3;
+        return HighRight;
     // Low Left Bouton position
     if(mousePos.x > widthWindow  * (2.f / 3.f) + widthWindow  * (1.f / 3.f) * (20.f / 100.f) &&
 	   mousePos.x < widthWindow  * (2.f / 3.f) + widthWindow  * (1.f / 3.f) * (40.f / 100.f) &&
 	   mousePos.y > heightWindow * (1.f / 2.f) + heightWindow * (1.f / 2.f) * (58.f / 100.f) &&
 	   mousePos.y < heightWindow * (1.f / 2.f) + heightWindow * (1.f / 2.f) * (79.f / 100.f))
-	   	return 4;
+	   	return LowLeft;
 	// Low Middle Bouton position
 	if(mousePos.x > widthWindow  * (2.f / 3.f) + widthWindow  * (1.f / 3.f) * (40.f / 100.f) &&
 	   mousePos.x < widthWindow  * (2.f / 3.f) + widthWindow  * (1.f / 3.f) * (60.f / 100.f) &&
 	   mousePos.y > heightWindow * (1.f / 2.f) + heightWindow * (1.f / 2.f) * (58.f / 100.f) &&
 	   mousePos.y < heightWindow * (1.f / 2.f) + heightWindow * (1.f / 2.f) * (79.f / 100.f))
-	   	return 5;
+	   	return LowMiddle;
 	// Low Right Bouton position
 	if(mousePos.x > widthWindow  * (2.f / 3.f) + widthWindow  * (1.f / 3.f) * (60.f / 100.f) &&
 	   mousePos.x < widthWindow  * (2.f / 3.f) + widthWindow  * (1.f / 3.f) * (80.f / 100.f) &&
 	   mousePos.y > heightWindow * (1.f / 2.f) + heightWindow * (1.f / 2.f) * (58.f / 100.f) &&
 	   mousePos.y < heightWindow * (1.f / 2.f) + heightWindow * (1.f / 2.f) * (79.f / 100.f))
-	   	return 6;
-    return 0;
+	   	return LowRight;
+    return Base;
 }
 
 void ATH::addMatrix(int vertex, glm::mat4 projMatrix, glm::mat4 matrix)

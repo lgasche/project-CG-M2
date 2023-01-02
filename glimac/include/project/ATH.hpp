@@ -7,6 +7,17 @@
 
 #include "element/Tunnel.hpp"
 
+enum ATHBouton
+{
+	Base 	   = 0,
+	HighLeft   = 1,
+	HighMiddle = 2,
+	HighRight  = 3,
+	LowLeft    = 4,
+	LowMiddle  = 5,
+	LowRight   = 6
+};
+
 class ATH
 {
 
@@ -29,7 +40,7 @@ class ATH
 	public:
 		ATH(const FilePath& applicationPath);
 
-		int clickCoordinate(glm::ivec2 mousePos, float widthWindow, float heightWindow);
+		ATHBouton clickCoordinate(glm::ivec2 mousePos, float widthWindow, float heightWindow);
 
 		void update(int index_) { index = index_; };
 

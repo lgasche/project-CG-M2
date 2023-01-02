@@ -27,6 +27,7 @@ class TunnelStorage
 		TunnelStorage();
 		TunnelStorage(const std::map<std::tuple<unsigned int, unsigned int>, Tunnel> map_lvl_, const FilePath& applicationPath);
 
+		bool canMove(std::tuple<unsigned int, unsigned int>  pos);
 		void drawTunnels(int vertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
 		void addMap(const map<tuple<unsigned int, unsigned int>, Tunnel> map_lvl_) { tunnels = map_lvl_; };
 		void clear();
