@@ -40,12 +40,13 @@ public:
                                              out{out_}
     {
         tunnelStorage = TunnelStorage(map_lvl_, applicationPath);
+        progam.loadBasicProgram(applicationPath);
     }
 
     tuple<unsigned int, unsigned int> get_start() { return start; };
 
     void clear();
-    void drawLevel(int squareVertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix);
+    void drawLevel(int squareVertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix, glm::vec3 playerPos);
     bool canMove(std::tuple<unsigned int, unsigned int> pos);
 
     void action(Camera camera);
@@ -65,5 +66,14 @@ private:
 
     Player player{20, 10, 10};
 
-    // LevelProgram squareProgam;
+    LevelProgram progam;
+
+    template <typename Item>
+    void drawEntity(int squareVertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix, glm::vec3 playerPos, map<unsigned int, Storage<Item>> storage)
+    {
+        for (auto &pair : storage)
+        {
+            pair.second.drawEntity(squareVertex, globalMVMatrix, projMatrix, std::make_tuple(playerPos.x, playerPos.z), progam);
+        }
+    }
 };

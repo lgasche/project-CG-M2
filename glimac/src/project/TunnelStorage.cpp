@@ -90,6 +90,8 @@ void TunnelStorage::drawTunnels(int vertex, glm::mat4 globalMVMatrix, glm::mat4 
     else if (!it->second.haveWestWall())
         Matrix = it->second.drawWestWall(glm::translate(globalMVMatrix, glm::vec3(0.f, 0.f, 0.f)));
     addMatrix(vertex, projMatrix, glm::rotate(Matrix, glm::radians(180.f), glm::vec3(0.f, 1.f, 0.f)));
+
+    // Items.
 }
 
 void TunnelStorage::clear()

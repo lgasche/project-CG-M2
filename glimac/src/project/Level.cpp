@@ -1,21 +1,17 @@
 #include <project/Level.hpp>
 
-void Level::drawLevel(int squareVertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix)
+void Level::drawLevel(int squareVertex, glm::mat4 globalMVMatrix, glm::mat4 projMatrix, glm::vec3 playerPos)
 {
     tunnelStorage.drawTunnels(squareVertex, globalMVMatrix, projMatrix, out);
-    // Creature
-    // Tresure
+    progam.mProgram.use();
+    drawEntity(squareVertex, globalMVMatrix, projMatrix, playerPos, treasureStorages);
+    drawEntity(squareVertex, globalMVMatrix, projMatrix, playerPos, weaponStorage);
+    drawEntity(squareVertex, globalMVMatrix, projMatrix, playerPos, monsterStorage);
 }
 
 void Level::clear()
 {
     tunnelStorage.clear();
-    /*
-    textureWall.clearTexture();
-    textureRoof.clearTexture();
-    textureFloor.clearTexture();
-    textureCreature.clearTexture();
-    */
 }
 
 bool Level::canMove(std::tuple<unsigned int, unsigned int> pos)

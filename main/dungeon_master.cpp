@@ -126,7 +126,7 @@ int main(int argc, char **argv)
         vertex.bindingVAO();
 
         // LEVEL
-        level.drawLevel(square.getVertexCount(), globalMVMatrix, projMatrix);
+        level.drawLevel(square.getVertexCount(), globalMVMatrix, projMatrix, camera.getPosition());
         // Correction de la caméra pour draw l'ATH
         glViewport(0.f, 0.f, widthWindow, heightWindow);
         // ATH
