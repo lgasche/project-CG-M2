@@ -15,6 +15,7 @@ using namespace std;
 #include "Monster.hpp"
 #include "element/Tunnel.hpp"
 #include "Level.hpp"
+#include "TreasureStorage.hpp"
 
 class LevelReader
 {
@@ -65,4 +66,6 @@ private:
     map<tuple<unsigned int, unsigned int>, Monster> monsters;
     tuple<unsigned int, unsigned int> start;
     tuple<unsigned int, unsigned int> out;
+
+    map<unsigned int, TreasureStorage> treasureStorages;
 };

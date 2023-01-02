@@ -2,10 +2,12 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <utility>
 
 using namespace std;
 
 #include <project/LevelReader.hpp>
+#include <project/TreasureStorage.hpp>
 
 /**
  * Parse the line describing an object or a monster.
@@ -33,6 +35,7 @@ vector<string> LevelReader::parse_line(const string str)
  */
 void LevelReader::read_lvl_txt_and_creat_objects()
 {
+    unsigned int type_check = 0;
     string line;
     ifstream file(path_file);
     if (!file)
@@ -55,14 +58,32 @@ void LevelReader::read_lvl_txt_and_creat_objects()
             // Parse data in line correspoding to the Treasure.
             getline(file, line);
             auto tokens = parse_line(line);
+
             // Treasure.
             if (tokens.size() == 7)
             {
                 auto pos = make_tuple((unsigned int)stoi(tokens[1]), (unsigned int)stoi(tokens[2]));
-                auto treasure = Treasure((unsigned int)stoi(tokens[0]), pos, tokens[3], (unsigned int)stoi(tokens[4]), stoi(tokens[5]), tokens[6]);
+                auto type = (unsigned int)stoi(tokens[4]);
+                auto treasure = Treasure((unsigned int)stoi(tokens[0]), pos, tokens[3], type, stoi(tokens[5]), tokens[6]);
                 std::cout << treasure << std::endl;
-                treasures.insert({pos, treasure});
+                // Storage don't exist.
+                if (treasureStorages.count(type) == 0)
+                {
+                    map<tuple<unsigned int, unsigned int>, Treasure> treasures;
+                    treasures.insert({pos, treasure});
+                    auto storage = TreasureStorage(treasures);
+                    treasureStorages.insert(make_pair(type, storage));
+                }
+                // Storage exist.
+                if (treasureStorages.count(type) == 1)
+                {
+                    auto itr = treasureStorages.find(type);
+                    auto storage = itr->second;
+                    storage.add(pos, treasure);
+                }
+                // treasures.insert({pos, treasure});
             }
+
             // Weapon.
             if (tokens.size() == 8)
             {
@@ -288,5 +309,5 @@ Level LevelReader::creat_lvl(const FilePath &applicationPath)
             << itr->second << '\n';
     }
 
-    return Level(map_lvl, treasures, monsters, start, out, applicationPath);
+    return Level(map_lvl, treasureStorages, monsters, start, out, applicationPath);
 }

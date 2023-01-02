@@ -41,4 +41,7 @@ public:
                                     model{model_}
     {
     }
+
+    string get_model() { return model; };
+    unsigned int get_type() { return type; };
 };

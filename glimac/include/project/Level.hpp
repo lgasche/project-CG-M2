@@ -10,6 +10,7 @@ using namespace std;
 #include <project/Weapon.hpp>
 #include <project/Monster.hpp>
 #include <project/TunnelStorage.hpp>
+#include <project/TreasureStorage.hpp>
 #include <project/Texture.hpp>
 #include <project/Square.hpp>
 #include <project/ATH.hpp>
@@ -23,22 +24,17 @@ class Level
 
 public:
     Level(const map<tuple<unsigned int, unsigned int>, Tunnel> map_lvl_,
-          map<tuple<unsigned int, unsigned int>, Treasure> treasures_,
+          map<unsigned int, TreasureStorage> treasureStorages_,
           map<tuple<unsigned int, unsigned int>, Monster> monsters_,
           tuple<unsigned int, unsigned int> start_,
           tuple<unsigned int, unsigned int> out_,
-          const FilePath &applicationPath) : treasures{treasures_},
+          const FilePath &applicationPath) : treasureStorages{treasureStorages_},
                                              monsters{monsters_},
                                              position{start_},
                                              start{start_},
                                              out{out_}
     {
         tunnelStorage = TunnelStorage(map_lvl_, applicationPath);
-        // Chargement des textures
-        // textureWall.loadTexture("../assets/textures/Wall_1.png");
-        // textureRoof.loadTexture("../assets/textures/Roof_1.png");
-        // textureFloor.loadTexture("../assets/textures/Floor_1.png");
-        textureCreature.loadTexture("../assets/textures/Creature_1.png");
     }
 
     tuple<unsigned int, unsigned int> get_start() { return start; };
@@ -51,15 +47,17 @@ private:
     TunnelStorage tunnelStorage;
     // map<tuple<unsigned int, unsigned int>, Tunnel> map_lvl;
 
-    map<tuple<unsigned int, unsigned int>, Treasure> treasures;
+    map<unsigned int, TreasureStorage> treasureStorages;
+
+    // map<tuple<unsigned int, unsigned int>, Treasure> treasures;
 
     map<tuple<unsigned int, unsigned int>, unique_ptr<Weapon>> weapons;
 
     map<tuple<unsigned int, unsigned int>, Monster> monsters;
 
     tuple<unsigned int, unsigned int> position; // Player coordinate.
-    tuple<unsigned int, unsigned int> start;   // Start coordinate.
-    tuple<unsigned int, unsigned int> out;    // Exit coordinate.
+    tuple<unsigned int, unsigned int> start;    // Start coordinate.
+    tuple<unsigned int, unsigned int> out;      // Exit coordinate.
 
     ////////////////////////////
     // Texture textureWall;
