@@ -13,6 +13,8 @@
 
 using namespace glimac;
 
+#define TIME_ACTION 0.5f
+
 int main(int argc, char **argv)
 {
     // Initialize SDL and open a window
@@ -62,6 +64,7 @@ int main(int argc, char **argv)
 
     // Application loop:
     bool done = false;
+    float time = windowManager.getTime();
     while (!done)
     {
         // Event loop:
@@ -102,7 +105,11 @@ int main(int argc, char **argv)
                     camera.moveLeft(false);
                     break;
                 case Base:
-                    level.action(camera);
+                    if ((windowManager.getTime() - time) >= TIME_ACTION)
+                    {
+                        level.action(camera);
+                        time = windowManager.getTime();
+                    }
                     break;
                 }
             }
