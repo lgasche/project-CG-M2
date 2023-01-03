@@ -5,7 +5,6 @@
 #include <iostream>
 #include <iterator>
 
-// #include <project/Square.hpp>
 #include <project/LevelReader.hpp>
 #include <project/Camera.hpp>
 #include <project/Vertex.hpp>
@@ -45,7 +44,6 @@ int main(int argc, char **argv)
     Camera camera((float)get<0>(start_camera), (float)get<1>(start_camera));
     std::cout << "CAMERA : " << (float)get<0>(start_camera) << " " << (float)get<1>(start_camera) << std::endl;
 
-    // Camera camera(0.f, 2.f);
     Vertex vertex;
     Texture texture;
     Square square;
@@ -86,31 +84,18 @@ int main(int argc, char **argv)
             {
                 switch (boutonValue)
                 {
-                case HighLeft:
-                    camera.turnLeft(true);
-                    break;
-                case HighMiddle:
-                    camera.moveAhead(true);
-                    break;
-                case HighRight:
-                    camera.turnLeft(false);
-                    break;
-                case LowLeft:
-                    camera.moveLeft(true);
-                    break;
-                case LowMiddle:
-                    camera.moveAhead(false);
-                    break;
-                case LowRight:
-                    camera.moveLeft(false);
-                    break;
+                case HighLeft: camera.turnLeft(true); break;
+                case HighMiddle: camera.moveAhead(true);break;
+                case HighRight: camera.turnLeft(false); break;
+                case LowLeft: camera.moveLeft(true); break;
+                case LowMiddle: camera.moveAhead(false); break;
+                case LowRight: camera.moveLeft(false); break;
                 case Base:
                     if ((windowManager.getTime() - time) >= TIME_ACTION)
                     {
                         level.action(camera);
                         time = windowManager.getTime();
-                    }
-                    break;
+                    } break;
                 }
             }
         }

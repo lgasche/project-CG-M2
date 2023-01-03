@@ -12,13 +12,29 @@ void Level::drawLevel(int squareVertex, glm::mat4 globalMVMatrix, glm::mat4 proj
 void Level::clear()
 {
     tunnelStorage.clear();
+    for (auto it = treasureStorages.begin(); it != treasureStorages.end(); it++) { it->second.clear(); }
+    for (auto it = weaponStorage.begin(); it != weaponStorage.end(); it++)       { it->second.clear(); }
+    for (auto it = monsterStorage.begin(); it != monsterStorage.end(); it++)     { it->second.clear(); }
 }
 
 bool Level::canMove(std::tuple<unsigned int, unsigned int> pos)
 {
-    // std::cout << get<0>(pos) << " " << get<1>(pos) << std::endl;
+    
     if (!tunnelStorage.canMove(pos))
         return false;
+
+    for (auto it = treasureStorages.begin(); it != treasureStorages.end(); it++)
+    {
+        if(!it->second.canMove(pos)) return false;
+    }
+    for (auto it = weaponStorage.begin(); it != weaponStorage.end(); it++)
+    {
+        if(!it->second.canMove(pos)) return false;
+    }
+    for (auto it = monsterStorage.begin(); it != monsterStorage.end(); it++)
+    {
+        if(!it->second.canMove(pos)) return false;
+    }
     return true;
 }
 

@@ -13,9 +13,8 @@ using namespace std;
 #include "Treasure.hpp"
 #include "Weapon.hpp"
 #include "Monster.hpp"
-#include "element/Tunnel.hpp"
+#include "Tunnel.hpp"
 #include "Level.hpp"
-#include "TreasureStorage.hpp"
 #include "Storage.hpp"
 
 class LevelReader

@@ -35,7 +35,6 @@ public:
           const FilePath &applicationPath) : treasureStorages{treasureStorages_},
                                              weaponStorage{weaponStorage_},
                                              monsterStorage{monsterStorage_},
-                                             position{start_},
                                              start{start_},
                                              out{out_}
     {
@@ -53,16 +52,12 @@ public:
 
 private:
     TunnelStorage tunnelStorage;
-
     map<unsigned int, Storage<Treasure>> treasureStorages;
     map<unsigned int, Storage<Weapon>> weaponStorage;
     map<unsigned int, Storage<Monster>> monsterStorage;
 
-    tuple<unsigned int, unsigned int> position; // Player coordinate.
     tuple<unsigned int, unsigned int> start;    // Start coordinate.
     tuple<unsigned int, unsigned int> out;      // Exit coordinate.
-
-    Texture textureCreature;
 
     Player player{20, 10, 10};
 

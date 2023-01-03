@@ -37,8 +37,6 @@ public:
 
     Storage(std::map<std::tuple<unsigned int, unsigned int>, Item> items_) : items{items_}
     {
-        // tunnelProgam.loadBasicProgram(applicationPath_);
-
         // Charge model.
         auto itr = items.begin();
         texture.loadTexture("../assets/textures/" + itr->second.get_model());
@@ -88,5 +86,18 @@ public:
             glUniformMatrix4fv(entityProgam.uNormalMatrix, 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(matrix))));
             glDrawArrays(GL_TRIANGLES, 0, vertex);
         }
+    }
+
+    bool canMove(std::tuple<unsigned int, unsigned int>  pos)
+    {
+        for (auto it = items.begin(); it != items.end(); it++)
+        {
+            if(it->first == pos)  return false;
+        }
+        return true;
+    }
+
+    void clear() {
+        texture.clearTexture();
     }
 };

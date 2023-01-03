@@ -4,8 +4,7 @@
 #include <glimac/glm.hpp>
 #include <project/Texture.hpp>
 #include <project/ATHStructure.hpp>
-
-#include "element/Tunnel.hpp"
+#include <project/Tunnel.hpp>
 
 enum ATHBouton
 {

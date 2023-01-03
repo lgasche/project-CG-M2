@@ -1,4 +1,4 @@
-#include <project/element/Tunnel.hpp>
+#include <project/Tunnel.hpp>
 
 glm::mat4 Tunnel::drawNorthWall(glm::mat4 globalMVMatrix)
 {

@@ -6,7 +6,7 @@
 #include <project/Texture.hpp>
 #include <project/LevelStructure.hpp>
 
-#include "element/Tunnel.hpp"
+#include <project/Tunnel.hpp>
 
 class TunnelStorage
 {
